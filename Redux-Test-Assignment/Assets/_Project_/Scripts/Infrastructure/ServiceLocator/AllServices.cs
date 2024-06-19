@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.ServiceLocator
+﻿using System;
+
+namespace Infrastructure.ServiceLocator
 {
 	public class AllServices
 	{
@@ -10,8 +12,15 @@
 			Implementation<TService>.Instance = implementation;
 		}
 
-		public TService GetSingle<TService>() where TService : IService => Implementation<TService>.Instance;
-		
+		public TService GetSingle<TService>() where TService : IService
+		{
+			TService instance = Implementation<TService>.Instance;
+			if (instance == null)
+				throw new NullReferenceException($"No service of type {typeof(TService).Name} found!");
+
+			return instance;
+		}
+
 		private static class Implementation<TService> where TService : IService
 		{
 			public static TService Instance;

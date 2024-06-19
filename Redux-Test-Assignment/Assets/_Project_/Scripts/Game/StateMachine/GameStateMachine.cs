@@ -14,9 +14,9 @@ namespace Game.StateMachine
 		{
 			_states = new Dictionary<Type, IExitableState>
 			{
-				[typeof(BootstrapState)] = new BootstrapState(),
-				[typeof(LoadSceneState)] = new LoadSceneState(services.GetSingle<ISceneLoader>()),
-				[typeof(GameplayState)] = new GameplayState()
+				[typeof(BootstrapState)] = new BootstrapState(this),
+				[typeof(LoadSceneState)] = new LoadSceneState(this, services.GetSingle<ISceneLoader>()),
+				[typeof(GameplayState)] = new GameplayState(services.GetSingle<IGameFactory>())
 			};
 		}
 

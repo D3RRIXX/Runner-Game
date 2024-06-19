@@ -16,15 +16,16 @@ namespace Game
 		private void Awake()
 		{
 			AllServices services = AllServices.Container;
-			services.RegisterSingle<IGameStateMachine>(new GameStateMachine(services));
 			
+			services.RegisterSingle<ISceneLoader>(new SceneLoader());
 			services.RegisterSingle<ILevelService>(new LevelService(_levelList));
 			services.RegisterSingle<IAssetProvider>(new AssetProvider());
 			services.RegisterSingle<IEventService>(new EventService());
-
 			RegisterPoolingManager();
 
 			services.RegisterSingle<IGameFactory>(new GameFactory(services.GetSingle<ILevelService>(), GetBlockFactory()));
+
+			services.RegisterSingle<IGameStateMachine>(new GameStateMachine(services));
 			
 			DontDestroyOnLoad(this);
 		}
@@ -36,12 +37,9 @@ namespace Game
 			AllServices.Container.RegisterSingle<IPoolingManager>(new PoolingManager(poolParent));
 		}
 
-		private async void Start()
+		private void Start()
 		{
-			var gameFactory = AllServices.Container.GetSingle<IGameFactory>();
-
-			await gameFactory.WarmUp();
-			await gameFactory.CreateGameLevel();
+			AllServices.Container.GetSingle<IGameStateMachine>().Enter<BootstrapState>();
 		}
 
 		private static Block.Factory GetBlockFactory()

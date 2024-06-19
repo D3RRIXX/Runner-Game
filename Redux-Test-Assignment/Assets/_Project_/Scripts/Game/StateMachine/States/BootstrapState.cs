@@ -2,7 +2,17 @@
 {
 	public class BootstrapState : IState
 	{
-		public void OnEnter() { }
+		private readonly IGameStateMachine _stateMachine;
+
+		public BootstrapState(IGameStateMachine stateMachine)
+		{
+			_stateMachine = stateMachine;
+		}
+		
+		public void OnEnter()
+		{
+			_stateMachine.Enter<LoadSceneState, string>("Game");
+		}
 		public void OnExit() { }
 	}
 }
