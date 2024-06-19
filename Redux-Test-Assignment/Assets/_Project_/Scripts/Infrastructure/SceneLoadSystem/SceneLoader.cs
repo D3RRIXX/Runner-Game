@@ -1,12 +1,15 @@
-﻿using UnityEngine.AddressableAssets;
+﻿using System;
+using Cysharp.Threading.Tasks;
+using UnityEngine.AddressableAssets;
 
 namespace Game.StateMachine
 {
 	public class SceneLoader : ISceneLoader
 	{
-		public void LoadScene(string scenePath)
+		public async void LoadScene(string scenePath, Action onComplete = null)
 		{
-			Addressables.LoadSceneAsync(scenePath);
+			await Addressables.LoadSceneAsync(scenePath);
+			onComplete?.Invoke();
 		}
 	}
 }

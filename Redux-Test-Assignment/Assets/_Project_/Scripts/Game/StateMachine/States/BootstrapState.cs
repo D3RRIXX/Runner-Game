@@ -6,7 +6,7 @@ using Infrastructure.PoolingSystem;
 using Infrastructure.ServiceLocator;
 using UnityEngine;
 
-namespace Game.StateMachine
+namespace Game.StateMachine.States
 {
 	public class BootstrapState : IState
 	{
@@ -32,7 +32,7 @@ namespace Game.StateMachine
 			services.RegisterSingle<IEventService>(new EventService());
 			RegisterPoolingManager();
 
-			services.RegisterSingle<IGameFactory>(new GameFactory(services.GetSingle<ILevelService>(), GetBlockFactory()));
+			services.RegisterSingle<IGameFactory>(new GameFactory(services.GetSingle<ILevelService>(), CreateBlockFactory()));
 			services.RegisterSingle<IGameStateMachine>(_stateMachine);
 		}
 
@@ -44,14 +44,13 @@ namespace Game.StateMachine
 			AllServices.Container.RegisterSingle<IPoolingManager>(new PoolingManager(poolParent));
 		}
 
-		private static Block.Factory GetBlockFactory()
+		private static Block.Factory CreateBlockFactory()
 		{
 			var assetProvider = AllServices.Container.GetSingle<IAssetProvider>();
 			var poolingManager = AllServices.Container.GetSingle<IPoolingManager>();
 			var eventService = AllServices.Container.GetSingle<IEventService>();
-			Transform parent = new GameObject("Blocks").transform;
 
-			return new Block.Factory(assetProvider, poolingManager, eventService, parent);
+			return new Block.Factory(assetProvider, poolingManager, eventService);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace Game.StateMachine
+﻿namespace Game.StateMachine.States
 {
 	public class GameplayState : IState
 	{

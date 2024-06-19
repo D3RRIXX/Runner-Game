@@ -1,4 +1,4 @@
-﻿namespace Game.StateMachine
+﻿namespace Game.StateMachine.States
 {
 	public class LoadSceneState : IState<string>
 	{
@@ -13,8 +13,14 @@
 
 		public void OnEnter(string scenePath)
 		{
-			_sceneLoader.LoadScene(scenePath);
+			_sceneLoader.LoadScene(scenePath, OnGameSceneLoaded);
 		}
+
+		private void OnGameSceneLoaded()
+		{
+			_gameStateMachine.Enter<GameplayState>();
+		}
+		
 		public void OnExit() { }
 	}
 }

@@ -16,21 +16,21 @@ namespace Game.Blocks
 			private readonly IAssetProvider _assetProvider;
 			private readonly IEventService _eventService;
 			private readonly IPoolingManager _poolingManager;
-			private readonly Transform _parent;
-
+			
+			private Transform _parent;
 			private BlockPalette _blockPalette;
 
-			public Factory(IAssetProvider assetProvider, IPoolingManager poolingManager, IEventService eventService, Transform parent)
+			public Factory(IAssetProvider assetProvider, IPoolingManager poolingManager, IEventService eventService)
 			{
 				_assetProvider = assetProvider;
 				_poolingManager = poolingManager;
 				_eventService = eventService;
-				_parent = parent;
 			}
 
 			public async UniTask WarmUp(LevelConfig level)
 			{
 				_blockPalette = level.BlockPalette;
+				_parent = new GameObject("Blocks").transform;
 				
 				IEnumerable<AssetReferenceGameObject> prefabRefs = level.Layout.Distinct().Select(GetBlockPrefabRef);
 				await UniTask.WhenAll(prefabRefs.Select(_assetProvider.Load<GameObject>));

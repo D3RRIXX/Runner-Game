@@ -1,5 +1,5 @@
 ﻿using Game.Configs;
-using Game.StateMachine;
+using Game.StateMachine.States;
 using UnityEngine;
 
 namespace Game
