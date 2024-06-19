@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Configs;
 using Infrastructure.ServiceLocator;
 using UniRx;
 
@@ -10,11 +11,11 @@ namespace Game.StateMachine
 		private readonly Dictionary<Type, IExitableState> _states;
 		private readonly ReactiveProperty<IExitableState> _currentState = new ReactiveProperty<IExitableState>();
 
-		public GameStateMachine(AllServices services)
+		public GameStateMachine(AllServices services, LevelList levelList)
 		{
 			_states = new Dictionary<Type, IExitableState>
 			{
-				[typeof(BootstrapState)] = new BootstrapState(this),
+				[typeof(BootstrapState)] = new BootstrapState(this, services, levelList),
 				[typeof(LoadSceneState)] = new LoadSceneState(this, services.GetSingle<ISceneLoader>()),
 				[typeof(GameplayState)] = new GameplayState(services.GetSingle<IGameFactory>())
 			};
