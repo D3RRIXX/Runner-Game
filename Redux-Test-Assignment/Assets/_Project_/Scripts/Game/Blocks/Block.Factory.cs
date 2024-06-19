@@ -36,7 +36,11 @@ namespace Game.Blocks
 			public async UniTask<Block> InstantiateBlock(BlockType blockType, Vector3 position, Quaternion rotation)
 			{
 				var prefab = await _assetProvider.Load<GameObject>(GetBlockPrefabRef(blockType));
-				return _poolingManager.Get(prefab.GetComponent<Block>(), position, rotation, _parent);
+				Block block = _poolingManager.Get(prefab.GetComponent<Block>(), position, rotation, _parent);
+				block.gameObject.SetActive(true);
+				block.OnSpawned(_poolingManager);
+				
+				return block;
 			}
 
 			private AssetReferenceGameObject GetBlockPrefabRef(BlockType blockType) => _blockPalette[blockType];

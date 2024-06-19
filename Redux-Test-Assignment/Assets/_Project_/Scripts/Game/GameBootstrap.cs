@@ -13,19 +13,28 @@ namespace Game
 
 		private void Awake()
 		{
-			AllServices.Container.RegisterSingle<ILevelService>(new LevelService(_levelList));
-			AllServices.Container.RegisterSingle<IAssetProvider>(new AssetProvider());
+			AllServices services = AllServices.Container;
+			
+			services.RegisterSingle<ILevelService>(new LevelService(_levelList));
+			services.RegisterSingle<IAssetProvider>(new AssetProvider());
 
+			RegisterPoolingManager();
+
+			services.RegisterSingle<IGameFactory>(new GameFactory(services.GetSingle<ILevelService>(), GetBlockFactory()));
+			
+			DontDestroyOnLoad(this);
+		}
+
+		private void RegisterPoolingManager()
+		{
 			var poolParent = new GameObject("Pools").transform;
 			poolParent.SetParent(transform);
 			AllServices.Container.RegisterSingle<IPoolingManager>(new PoolingManager(poolParent));
-
-			DontDestroyOnLoad(this);
 		}
 
 		private async void Start()
 		{
-			var gameFactory = new GameFactory(AllServices.Container.GetSingle<ILevelService>(), GetBlockFactory());
+			var gameFactory = AllServices.Container.GetSingle<IGameFactory>();
 
 			await gameFactory.WarmUp();
 			await gameFactory.CreateGameLevel();
@@ -36,7 +45,7 @@ namespace Game
 			var assetProvider = AllServices.Container.GetSingle<IAssetProvider>();
 			var poolingManager = AllServices.Container.GetSingle<IPoolingManager>();
 			Transform parent = new GameObject("Blocks").transform;
-			
+
 			return new Block.Factory(assetProvider, poolingManager, parent);
 		}
 	}
