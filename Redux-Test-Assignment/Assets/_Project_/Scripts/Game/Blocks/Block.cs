@@ -2,7 +2,7 @@
 
 namespace Game.Blocks
 {
-	public class Block : MonoBehaviour
+	public partial class Block : MonoBehaviour
 	{
 		[SerializeField] private Transform _respawnPoint;
 		[SerializeField] private Transform _endPoint;
