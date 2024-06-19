@@ -1,6 +1,7 @@
 ﻿using Game.Blocks;
 using Game.Configs;
 using Game.Levels;
+using Game.StateMachine;
 using Infrastructure.EventBus;
 using Infrastructure.PoolingSystem;
 using Infrastructure.ServiceLocator;
@@ -15,6 +16,7 @@ namespace Game
 		private void Awake()
 		{
 			AllServices services = AllServices.Container;
+			services.RegisterSingle<IGameStateMachine>(new GameStateMachine(services));
 			
 			services.RegisterSingle<ILevelService>(new LevelService(_levelList));
 			services.RegisterSingle<IAssetProvider>(new AssetProvider());
