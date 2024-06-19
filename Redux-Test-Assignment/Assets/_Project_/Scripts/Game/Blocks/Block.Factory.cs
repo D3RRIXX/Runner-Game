@@ -2,6 +2,7 @@
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Game.Configs;
+using Infrastructure.EventBus;
 using Infrastructure.PoolingSystem;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -13,15 +14,17 @@ namespace Game.Blocks
 		public class Factory
 		{
 			private readonly IAssetProvider _assetProvider;
+			private readonly IEventService _eventService;
 			private readonly IPoolingManager _poolingManager;
 			private readonly Transform _parent;
 
 			private BlockPalette _blockPalette;
 
-			public Factory(IAssetProvider assetProvider, IPoolingManager poolingManager, Transform parent)
+			public Factory(IAssetProvider assetProvider, IPoolingManager poolingManager, IEventService eventService, Transform parent)
 			{
 				_assetProvider = assetProvider;
 				_poolingManager = poolingManager;
+				_eventService = eventService;
 				_parent = parent;
 			}
 
@@ -38,7 +41,7 @@ namespace Game.Blocks
 				var prefab = await _assetProvider.Load<GameObject>(GetBlockPrefabRef(blockType));
 				Block block = _poolingManager.Get(prefab.GetComponent<Block>(), position, rotation, _parent);
 				block.gameObject.SetActive(true);
-				block.OnSpawned(_poolingManager);
+				block.OnSpawned(_poolingManager, _eventService, blockType);
 				
 				return block;
 			}

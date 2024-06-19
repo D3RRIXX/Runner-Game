@@ -13,9 +13,9 @@ namespace Game
 
 		private readonly Block.Factory _blockFactory;
 		private readonly LevelConfig _level;
+		private readonly List<Block> _activeBlocks = new List<Block>();
 
 		private int _nextBlockIdx;
-		private List<Block> _activeBlocks = new List<Block>();
 
 		public GameFactory(ILevelService levelService, Block.Factory blockFactory)
 		{

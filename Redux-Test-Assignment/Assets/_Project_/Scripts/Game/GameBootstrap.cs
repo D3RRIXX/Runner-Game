@@ -1,6 +1,7 @@
 ﻿using Game.Blocks;
 using Game.Configs;
 using Game.Levels;
+using Infrastructure.EventBus;
 using Infrastructure.PoolingSystem;
 using Infrastructure.ServiceLocator;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace Game
 			
 			services.RegisterSingle<ILevelService>(new LevelService(_levelList));
 			services.RegisterSingle<IAssetProvider>(new AssetProvider());
+			services.RegisterSingle<IEventService>(new EventService());
 
 			RegisterPoolingManager();
 
@@ -44,9 +46,10 @@ namespace Game
 		{
 			var assetProvider = AllServices.Container.GetSingle<IAssetProvider>();
 			var poolingManager = AllServices.Container.GetSingle<IPoolingManager>();
+			var eventService = AllServices.Container.GetSingle<IEventService>();
 			Transform parent = new GameObject("Blocks").transform;
 
-			return new Block.Factory(assetProvider, poolingManager, parent);
+			return new Block.Factory(assetProvider, poolingManager, eventService, parent);
 		}
 	}
 }
