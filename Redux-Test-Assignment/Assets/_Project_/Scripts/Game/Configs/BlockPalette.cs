@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Game.Blocks;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Utilities;
 
-namespace Game
+namespace Game.Configs
 {
 	[CreateAssetMenu(fileName = "Block Palette", menuName = SOPaths.CONFIGS + "Block Palette", order = 0)]
 	public class BlockPalette : ScriptableObject
