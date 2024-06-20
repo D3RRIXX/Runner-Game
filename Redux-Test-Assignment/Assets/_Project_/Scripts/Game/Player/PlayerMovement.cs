@@ -16,16 +16,16 @@ namespace Game.Player
 		private readonly ReactiveProperty<int> _currentJumpNumber = new ReactiveProperty<int>();
 		private Rigidbody _rb;
 		private bool _queueJump;
+		private bool _isGrounded;
 
 		/// <summary>
 		/// Observable that emits on player jump, containing current jump number
 		/// </summary>
 		public IObservable<int> JumpStream => _currentJumpNumber.SkipLatestValueOnSubscribe();
 
-		public bool CanJump => _currentJumpNumber.Value < AllowedJumps;
+		private bool CanJump => _currentJumpNumber.Value == 0 ? _isGrounded : _currentJumpNumber.Value < AllowedJumps;
 		private int AllowedJumps => _jumpHeights.Length;
-
-		private float Gravity => Physics.gravity.y;
+		private static float Gravity => Physics.gravity.y;
 
 		private void OnDrawGizmos()
 		{
@@ -47,12 +47,13 @@ namespace Game.Player
 
 		private void FixedUpdate()
 		{
+			_isGrounded = HasGroundUnderneath();
 			if (_queueJump)
 			{
 				Jump();
 				_queueJump = false;
 			}
-			else if (_currentJumpNumber.Value > 0 && _rb.velocity.y <= 0 && HasGroundUnderneath())
+			else if (_currentJumpNumber.Value > 0 && _rb.velocity.y <= 0 && _isGrounded)
 			{
 				_currentJumpNumber.Value = 0;
 			}

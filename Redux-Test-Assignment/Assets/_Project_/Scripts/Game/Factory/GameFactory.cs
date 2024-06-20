@@ -30,23 +30,6 @@ namespace Game.Factory
 			await UniTask.WhenAll(_blockFactory.WarmUp(_level), _playerFactory.WarmUp());
 		}
 
-		public async UniTask CreateGameLevel()
-		{
-			Vector3 position = Vector3.zero;
-			Quaternion rotation = Quaternion.identity;
-
-			for (int i = 0; i < Constants.BLOCKS_AHEAD; i++)
-			{
-				BlockType blockType = _level.Blocks[i];
-				Block block = await _blockFactory.InstantiateBlock(blockType, position, rotation);
-				(position, rotation) = block.NextBlockSpawnTransform;
-
-				_activeBlocks.Add(block);
-			}
-
-			_nextBlockIdx = Constants.BLOCKS_AHEAD;
-		}
-
 		public UniTask<GameObject> CreatePlayer(Vector3 at) => _playerFactory.Create(at);
 
 		public async UniTask<Block> TrySpawnNextBlock()
@@ -62,8 +45,7 @@ namespace Game.Factory
 
 			TryDespawnFirstActiveBlock();
 
-			Block lastBlock = _activeBlocks[_activeBlocks.Count - 1];
-			(Vector3 position, Quaternion rotation) = lastBlock.NextBlockSpawnTransform;
+			(Vector3 position, Quaternion rotation) = GetNextBlockSpawnTransform();
 
 			BlockType blockType = _level.Blocks[_nextBlockIdx];
 			Block block = await _blockFactory.InstantiateBlock(blockType, position, rotation);
@@ -75,10 +57,19 @@ namespace Game.Factory
 
 		private async void SpawnFinishBlock()
 		{
-			Block lastBlock = _activeBlocks[_activeBlocks.Count - 1];
-			(Vector3 position, Quaternion rotation) = lastBlock.NextBlockSpawnTransform;
-
+			(Vector3 position, Quaternion rotation) = GetNextBlockSpawnTransform();
 			await _blockFactory.InstantiateFinishBlock(position, rotation);
+		}
+
+		private (Vector3 position, Quaternion rotation) GetNextBlockSpawnTransform()
+		{
+			if (_activeBlocks.Count == 0)
+				return (Vector3.zero, Quaternion.identity);
+			
+			Block lastBlock = _activeBlocks[_activeBlocks.Count - 1];
+			Transform nextBlockSpawnTransform = lastBlock.NextBlockSpawnTransform;
+			
+			return (nextBlockSpawnTransform.position, nextBlockSpawnTransform.rotation);
 		}
 
 		private void TryDespawnFirstActiveBlock()

@@ -21,8 +21,8 @@ namespace Game.Blocks
 
 		public BlockType BlockType { get; private set; }
 		
-		public Vector3 RespawnPoint => _respawnPoint.position;
-		public (Vector3 position, Quaternion rotation) NextBlockSpawnTransform => (_endPoint.position, _endPoint.rotation);
+		public Transform RespawnPoint => _respawnPoint;
+		public Transform NextBlockSpawnTransform => _endPoint;
 
 		public void Construct(IPoolingManager poolingManager, IEventService eventService, BlockType blockType)
 		{

@@ -33,6 +33,10 @@ MonoBehaviour:
     m_Address: Assets/_Project_/Prefabs/Blocks/Block Finish.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: d1224eca565c47847adac50d68b64a44
+    m_Address: Assets/_Project_/Prefabs/Obstacles/Obstacle Saw.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 76e4bcc37d1e731458262d5252d2fa42, type: 2}
   m_SchemaSet:

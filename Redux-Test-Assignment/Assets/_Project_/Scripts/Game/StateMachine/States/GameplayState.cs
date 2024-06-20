@@ -4,6 +4,7 @@ using Game.Blocks;
 using Game.Events;
 using Game.Factory;
 using Game.Levels;
+using Game.Player;
 using Infrastructure.EventBus;
 using UnityEngine;
 using Utilities;
@@ -15,8 +16,6 @@ namespace Game.StateMachine.States
 		private readonly IGameStateMachine _gameStateMachine;
 		private readonly IGameFactory _gameFactory;
 		private readonly IEventService _eventService;
-
-		private Block _currentBlock;
 
 		public GameplayState(IGameStateMachine gameStateMachine, IGameFactory gameFactory, IEventService eventService)
 		{
@@ -52,10 +51,7 @@ namespace Game.StateMachine.States
 				await SpawnNextBlock();
 		}
 
-		private async UniTask SpawnNextBlock()
-		{
-			_currentBlock = await _gameFactory.TrySpawnNextBlock();
-		}
+		private UniTask SpawnNextBlock() => _gameFactory.TrySpawnNextBlock();
 
 		private void OnLevelCompleted()
 		{
