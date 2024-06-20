@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Game.Blocks;
 using Game.Levels;
 using Game.Player;
+using UI;
 using UnityEngine;
 using Utilities;
 
@@ -12,22 +13,24 @@ namespace Game.Factory
 	{
 		private readonly Block.Factory _blockFactory;
 		private readonly PlayerFactory _playerFactory;
+		private readonly UIFactory _uiFactory;
 		private readonly List<Block> _activeBlocks = new List<Block>();
 
 		private LevelConfig _level;
 		private int _nextBlockIdx;
 
-		public GameFactory(Block.Factory blockFactory, PlayerFactory playerFactory)
+		public GameFactory(Block.Factory blockFactory, PlayerFactory playerFactory, UIFactory uiFactory)
 		{
 			_blockFactory = blockFactory;
 			_playerFactory = playerFactory;
+			_uiFactory = uiFactory;
 		}
 
 		public async UniTask WarmUp(LevelConfig levelConfig)
 		{
 			_level = levelConfig;
 
-			await UniTask.WhenAll(_blockFactory.WarmUp(_level), _playerFactory.WarmUp());
+			await UniTask.WhenAll(_blockFactory.WarmUp(_level), _playerFactory.WarmUp(), _uiFactory.WarmUp());
 		}
 
 		public UniTask<GameObject> CreatePlayer(Vector3 at) => _playerFactory.Create(at);
@@ -54,6 +57,8 @@ namespace Game.Factory
 			_nextBlockIdx++;
 			return block;
 		}
+
+		public UniTask<UIManager> CreateUIRoot(PlayerHealth player) => _uiFactory.CreateUIRoot(player);
 
 		private async void SpawnFinishBlock()
 		{

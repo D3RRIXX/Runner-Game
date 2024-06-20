@@ -36,9 +36,9 @@ namespace Game.StateMachine.States
 			services.RegisterSingle<IEventService>(new EventService());
 			services.RegisterSingle<IPoolingManager>(CreatePoolingManager());
 
-			services.RegisterSingle<IGameFactory>(new GameFactory(CreateBlockFactory(services), CreatePlayerFactory(services)));
+			services.RegisterSingle<IGameFactory>(new GameFactory(CreateBlockFactory(services), CreatePlayerFactory(services), new UIFactory(services.GetSingle<IAssetProvider>())));
 			services.RegisterSingle<IGameStateMachine>(_stateMachine);
-			services.RegisterSingle(new LevelProgress());
+			services.RegisterSingle(new LevelState());
 		}
 
 		private static PlayerFactory CreatePlayerFactory(AllServices services)

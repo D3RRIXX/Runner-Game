@@ -12,16 +12,16 @@ namespace UI.Screens
 		[SerializeField] private LevelProgressItem _listItemPrefab;
 		[SerializeField] private Transform _contentParent;
 
-		private LevelProgress _levelProgress;
+		private LevelState _levelState;
 
 		private void Awake()
 		{
-			_levelProgress = AllServices.Container.GetSingle<LevelProgress>();
+			_levelState = AllServices.Container.GetSingle<LevelState>();
 		}
 
 		private void OnEnable()
 		{
-			var lookup = _levelProgress.Level.Blocks.Take(_levelProgress.BlocksPassed)
+			var lookup = _levelState.Config.Blocks.Take(_levelState.BlocksPassed)
 			                           .GroupBy(x => x)
 			                           .ToDictionary(x => x.Key, x => x.Count());
 
