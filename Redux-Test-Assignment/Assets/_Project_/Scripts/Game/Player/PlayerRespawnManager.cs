@@ -45,11 +45,26 @@ namespace Game.Player
 		public void RespawnPlayer(bool withFullHealth = false)
 		{
 			PlayerHealth player = _levelState.Player;
+			Vector3 position;
+			Quaternion rotation;
+
 			if (withFullHealth)
+			{
 				player.RestoreLives(player.MaxLives);
-			
-			Transform point = _lastPassedBlock.RespawnPoint;
-			player.transform.SetPositionAndRotation(point.position, point.rotation);
+				Transform point = _lastPassedBlock.NextBlockSpawnTransform;
+				position = point.position;
+				position.y = _lastPassedBlock.RespawnPoint.position.y;
+				
+				rotation = point.rotation;
+			}
+			else
+			{
+				Transform point = _lastPassedBlock.RespawnPoint;
+				position = point.position;
+				rotation = point.rotation;
+			}
+
+			player.transform.SetPositionAndRotation(position, rotation);
 			player.SetInvincible(RESPAWN_INVINCIBILITY).Forget();
 		}
 

@@ -24,10 +24,10 @@ namespace Game.Levels
 
 			var blocks = new List<BlockType>(levelLength)
 			{
-				BlockType.Default
+				BlockType.Regular
 			};
 
-			var prevBlockType = BlockType.Default;
+			var prevBlockType = BlockType.Regular;
 			for (int i = 1; i < levelLength; i++)
 			{
 				BlockType blockType;
