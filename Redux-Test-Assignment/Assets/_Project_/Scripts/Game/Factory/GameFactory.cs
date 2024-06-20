@@ -4,13 +4,12 @@ using Game.Blocks;
 using Game.Levels;
 using Game.Player;
 using UnityEngine;
+using Utilities;
 
 namespace Game.Factory
 {
 	public class GameFactory : IGameFactory
 	{
-		private const int BLOCKS_AHEAD = 5;
-
 		private readonly Block.Factory _blockFactory;
 		private readonly PlayerFactory _playerFactory;
 		private readonly List<Block> _activeBlocks = new List<Block>();
@@ -36,7 +35,7 @@ namespace Game.Factory
 			Vector3 position = Vector3.zero;
 			Quaternion rotation = Quaternion.identity;
 
-			for (int i = 0; i < BLOCKS_AHEAD; i++)
+			for (int i = 0; i < Constants.BLOCKS_AHEAD; i++)
 			{
 				BlockType blockType = _level.Blocks[i];
 				Block block = await _blockFactory.InstantiateBlock(blockType, position, rotation);
@@ -45,20 +44,20 @@ namespace Game.Factory
 				_activeBlocks.Add(block);
 			}
 
-			_nextBlockIdx = BLOCKS_AHEAD;
+			_nextBlockIdx = Constants.BLOCKS_AHEAD;
 		}
 
 		public UniTask<GameObject> CreatePlayer(Vector3 at) => _playerFactory.Create(at);
 
-		public async void SpawnNextBlock()
+		public async UniTask<Block> TrySpawnNextBlock()
 		{
 			if (_nextBlockIdx > _level.Blocks.Count)
-				return;
+				return null;
 
 			if (_nextBlockIdx == _level.Blocks.Count)
 			{
 				SpawnFinishBlock();
-				return;
+				return null;
 			}
 
 			TryDespawnFirstActiveBlock();
@@ -71,6 +70,7 @@ namespace Game.Factory
 			_activeBlocks.Add(block);
 
 			_nextBlockIdx++;
+			return block;
 		}
 
 		private async void SpawnFinishBlock()
@@ -83,7 +83,7 @@ namespace Game.Factory
 
 		private void TryDespawnFirstActiveBlock()
 		{
-			if (_activeBlocks.Count < BLOCKS_AHEAD + 1)
+			if (_activeBlocks.Count < Constants.BLOCKS_AHEAD + 1)
 				return;
 
 			Block firstBlock = _activeBlocks[0];

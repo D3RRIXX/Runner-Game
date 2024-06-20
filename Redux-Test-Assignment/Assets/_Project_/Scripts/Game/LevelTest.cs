@@ -16,7 +16,7 @@ namespace Game
 		private void Update()
 		{
 			if (Input.GetKeyDown(KeyCode.Space))
-				_gameFactory.SpawnNextBlock();
+				_gameFactory.TrySpawnNextBlock();
 		}
 	}
 }

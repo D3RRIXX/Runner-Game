@@ -4,12 +4,12 @@ using Infrastructure.ServiceLocator;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using Utilities;
 
 namespace Game
 {
 	public class FinishTrigger : MonoBehaviour
 	{
-		private const string PLAYER_TAG = "Player";
 		private IEventService _eventService;
 
 		private void Awake()
@@ -17,7 +17,7 @@ namespace Game
 			_eventService = AllServices.Container.GetSingle<IEventService>();
 
 			this.OnTriggerEnterAsObservable()
-			    .Where(x => x.CompareTag(PLAYER_TAG))
+			    .Where(x => x.CompareTag(Constants.PLAYER_TAG))
 			    .Subscribe(_ => _eventService.Fire<LevelCompletedEvent>())
 			    .AddTo(this);
 		}
