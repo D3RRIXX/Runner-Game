@@ -13,12 +13,24 @@ namespace Game.Player
 			_assetProvider = assetProvider;
 		}
 
-		public UniTask WarmUp() => _assetProvider.Load<GameObject>(AssetPaths.PLAYER);
+		public UniTask WarmUp()
+		{
+			return UniTask.WhenAll(LoadPlayerPrefab(), LoadCameraPrefab());
+		}
+
+		private UniTask<GameObject> LoadPlayerPrefab() => _assetProvider.Load<GameObject>(AssetPaths.PLAYER);
+		private UniTask<GameObject> LoadCameraPrefab() => _assetProvider.Load<GameObject>(AssetPaths.FOLLOW_CAMERA);
 
 		public async UniTask<GameObject> Create(Vector3 at)
 		{
-			var prefab = await _assetProvider.Load<GameObject>(AssetPaths.PLAYER);
-			return Object.Instantiate(prefab, at, Quaternion.identity);
+			GameObject playerPrefab = await LoadPlayerPrefab();
+			GameObject player = Object.Instantiate(playerPrefab, at, Quaternion.identity);
+
+			GameObject cameraPrefab = await LoadCameraPrefab();
+			var camera = Object.Instantiate(cameraPrefab).GetComponent<FollowCamera>();
+			camera.Construct(player.transform);
+
+			return player;
 		}
 	}
 }

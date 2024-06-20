@@ -22,5 +22,7 @@ namespace Game.Levels
 			var random = new Random(CurrentLevelIdx);
 			return _levelList.Levels[random.Next(0, _levelList.Levels.Count)];
 		}
+
+		public void SetCurrentLevelCompleted() => CurrentLevelIdx++;
 	}
 }

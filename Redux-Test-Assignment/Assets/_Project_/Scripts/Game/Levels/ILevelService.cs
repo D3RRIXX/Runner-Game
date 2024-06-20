@@ -7,5 +7,6 @@ namespace Game.Levels
 	{
 		int CurrentLevelIdx { get; }
 		LevelConfig GetNextLevel();
+		void SetCurrentLevelCompleted();
 	}
 }
