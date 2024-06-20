@@ -18,23 +18,24 @@ namespace Game
 		private void Awake()
 		{
 			_collider = GetComponent<Collider>();
+			_eventService = AllServices.Container.GetSingle<IEventService>();
 			
 			this.OnTriggerEnterAsObservable()
 			    .Where(x => x.CompareTag(Constants.PLAYER_TAG))
+			    .Select(x => x.GetComponent<PlayerHealth>())
+			    .Where(x => !x.IsInvincible.Value)
 			    .Subscribe(DealDamageToPlayer)
 			    .AddTo(this);
-
-			_eventService = AllServices.Container.GetSingle<IEventService>();
 
 			Observable.FromEvent<PlayerInvincibilityEvent>(h => _eventService.Subscribe(h), h => _eventService.Unsubscribe(h))
 			          .Subscribe(evt => _collider.enabled = !evt.IsInvincible)
 			          .AddTo(this);
 		}
 
-		private void DealDamageToPlayer(Collider player)
+		private void DealDamageToPlayer(PlayerHealth player)
 		{
 			Debug.Log("Hit player");
-			player.GetComponent<PlayerHealth>().TakeDamage();
+			player.TakeDamage();
 		}
 	}
 }

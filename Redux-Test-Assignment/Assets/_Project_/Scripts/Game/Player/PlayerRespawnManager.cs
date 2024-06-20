@@ -1,5 +1,7 @@
 ﻿using Game.Blocks;
 using Game.Events;
+using Game.StateMachine;
+using Game.StateMachine.States;
 using Infrastructure.EventBus;
 using Infrastructure.ServiceLocator;
 using UnityEngine;
@@ -10,10 +12,12 @@ namespace Game.Player
 	{
 		private IEventService _eventService;
 		private Block _lastPassedBlock;
+		private IGameStateMachine _gameStateMachine;
 
 		private void Awake()
 		{
 			_eventService = AllServices.Container.GetSingle<IEventService>();
+			_gameStateMachine = AllServices.Container.GetSingle<IGameStateMachine>();
 
 			_eventService.Subscribe<BlockPassedEvent>(OnBlockPassed);
 			_eventService.Subscribe<PlayerDiedEvent>(OnPlayerDied);
@@ -33,8 +37,16 @@ namespace Game.Player
 
 		private void OnPlayerDied(PlayerDiedEvent evt)
 		{
+			PlayerHealth player = evt.Player;
+			if (player.Lives.Value == 0)
+			{
+				_gameStateMachine.Enter<LevelFailedState>();
+				return;
+			}
+			
 			Transform point = _lastPassedBlock.RespawnPoint;
-			evt.Player.transform.SetPositionAndRotation(point.position, point.rotation);
+			player.transform.SetPositionAndRotation(point.position, point.rotation);
+			player.SetInvincible().Forget();
 		}
 	}
 }
