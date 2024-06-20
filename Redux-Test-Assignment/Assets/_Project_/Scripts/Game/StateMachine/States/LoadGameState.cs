@@ -43,7 +43,7 @@ namespace Game.StateMachine.States
 			LevelConfig levelConfig = _levelService.GetNextLevel();
 
 			await _gameFactory.WarmUp(levelConfig);
-			await CreateGameLevel();
+			await _gameFactory.BuildLevel(levelConfig);
 
 			PlayerHealth player = await CreatePlayer();
 			_levelState.Initialize(levelConfig, player);
@@ -51,12 +51,6 @@ namespace Game.StateMachine.States
 			await CreateUIRoot(player);
 			
 			_gameStateMachine.Enter<GameplayState>();
-		}
-
-		private async UniTask CreateGameLevel()
-		{
-			for (int i = 0; i < Constants.BLOCKS_AHEAD; i++)
-				await _gameFactory.TrySpawnNextBlock();
 		}
 
 		private async UniTask CreateUIRoot(PlayerHealth player)

@@ -11,8 +11,8 @@ namespace Game.Factory
 	public interface IGameFactory : IService
 	{
 		UniTask WarmUp(LevelConfig levelConfig);
+		UniTask BuildLevel(LevelConfig level);
 		UniTask<GameObject> CreatePlayer(Vector3 at);
-		UniTask<Block> TrySpawnNextBlock();
 		UniTask<UIManager> CreateUIRoot(PlayerHealth player);
 		void CleanUp();
 	}

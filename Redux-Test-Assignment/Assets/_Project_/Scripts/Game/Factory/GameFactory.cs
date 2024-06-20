@@ -5,7 +5,6 @@ using Game.Levels;
 using Game.Player;
 using UI;
 using UnityEngine;
-using Utilities;
 
 namespace Game.Factory
 {
@@ -40,64 +39,39 @@ namespace Game.Factory
 				block.Dispose();
 				Object.Destroy(block.gameObject);
 			}
-			
+
 			_activeBlocks.Clear();
 		}
 
 		public UniTask<GameObject> CreatePlayer(Vector3 at) => _playerFactory.Create(at);
 
-		public async UniTask<Block> TrySpawnNextBlock()
+		public async UniTask BuildLevel(LevelConfig level)
 		{
-			if (_nextBlockIdx > _level.Blocks.Count)
-				return null;
-
-			if (_nextBlockIdx == _level.Blocks.Count)
+			(Vector3 position, Quaternion rotation) = GetNextBlockSpawnTransform();
+			foreach (BlockType blockType in level.Blocks)
 			{
-				SpawnFinishBlock();
+				Block block = await _blockFactory.InstantiateBlock(blockType, position, rotation);
+
+				_activeBlocks.Add(block);
 				_nextBlockIdx++;
-				return null;
+				
+				(position, rotation) = GetNextBlockSpawnTransform();
 			}
 
-			TryDespawnFirstActiveBlock();
-
-			(Vector3 position, Quaternion rotation) = GetNextBlockSpawnTransform();
-
-			BlockType blockType = _level.Blocks[_nextBlockIdx];
-			Block block = await _blockFactory.InstantiateBlock(blockType, position, rotation);
-			_activeBlocks.Add(block);
-
-			_nextBlockIdx++;
-			return block;
+			await _blockFactory.InstantiateFinishBlock(position, rotation);
 		}
 
 		public UniTask<UIManager> CreateUIRoot(PlayerHealth player) => _uiFactory.CreateUIRoot(player);
-
-		private async void SpawnFinishBlock()
-		{
-			(Vector3 position, Quaternion rotation) = GetNextBlockSpawnTransform();
-			await _blockFactory.InstantiateFinishBlock(position, rotation);
-		}
 
 		private (Vector3 position, Quaternion rotation) GetNextBlockSpawnTransform()
 		{
 			if (_activeBlocks.Count == 0)
 				return (Vector3.zero, Quaternion.identity);
-			
+
 			Block lastBlock = _activeBlocks[_activeBlocks.Count - 1];
 			Transform nextBlockSpawnTransform = lastBlock.NextBlockSpawnTransform;
-			
+
 			return (nextBlockSpawnTransform.position, nextBlockSpawnTransform.rotation);
-		}
-
-		private void TryDespawnFirstActiveBlock()
-		{
-			if (_activeBlocks.Count < Constants.BLOCKS_AHEAD + 1)
-				return;
-
-			Block firstBlock = _activeBlocks[0];
-			firstBlock.Dispose();
-
-			_activeBlocks.RemoveAt(0);
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace Game.StateMachine
 			{
 				[typeof(BootstrapState)] = new BootstrapState(this, services, levelGenerationConfig),
 				[typeof(LoadGameState)] = new LoadGameState(this, services.GetSingle<ISceneLoader>(), services.GetSingle<ILevelService>(), services.GetSingle<LevelState>(), services.GetSingle<IGameFactory>()),
-				[typeof(GameplayState)] = new GameplayState(this, services.GetSingle<IGameFactory>(), services.GetSingle<IEventService>(), services.GetSingle<LevelState>(), services.GetSingle<IPlayerRespawnManager>()),
+				[typeof(GameplayState)] = new GameplayState(this, services.GetSingle<IEventService>(), services.GetSingle<LevelState>(), services.GetSingle<IPlayerRespawnManager>()),
 				[typeof(LevelCompleteState)] = new LevelCompleteState(services.GetSingle<ILevelService>()),
 				[typeof(LevelFailedState)] = new LevelFailedState()
 			};

@@ -29,12 +29,12 @@ namespace Game.Blocks
 				_eventService = eventService;
 			}
 
-			public async UniTask WarmUp(LevelConfig levelGeneration)
+			public async UniTask WarmUp(LevelConfig level)
 			{
-				_blockPalette = levelGeneration.BlockPalette;
+				_blockPalette = level.BlockPalette;
 				_parent = new GameObject("Blocks").transform;
 				
-				IEnumerable<AssetReferenceGameObject> prefabRefs = levelGeneration.Blocks.Distinct().Select(GetBlockPrefabRef);
+				IEnumerable<AssetReferenceGameObject> prefabRefs = level.Blocks.Distinct().Select(GetBlockPrefabRef);
 				await UniTask.WhenAll(prefabRefs.Select(_assetProvider.Load<GameObject>));
 			}
 
