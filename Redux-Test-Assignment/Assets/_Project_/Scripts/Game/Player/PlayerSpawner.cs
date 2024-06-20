@@ -1,4 +1,5 @@
-﻿using Infrastructure.ServiceLocator;
+﻿using Game.Factory;
+using Infrastructure.ServiceLocator;
 using UnityEngine;
 
 namespace Game.Player

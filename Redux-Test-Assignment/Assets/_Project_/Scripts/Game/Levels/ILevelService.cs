@@ -1,5 +1,4 @@
-﻿using Game.Configs;
-using Infrastructure.ServiceLocator;
+﻿using Infrastructure.ServiceLocator;
 
 namespace Game.Levels
 {

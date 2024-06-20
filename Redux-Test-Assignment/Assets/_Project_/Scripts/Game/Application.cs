@@ -1,4 +1,4 @@
-﻿using Game.Configs;
+﻿using Game.Levels;
 using Game.StateMachine;
 using Infrastructure.ServiceLocator;
 

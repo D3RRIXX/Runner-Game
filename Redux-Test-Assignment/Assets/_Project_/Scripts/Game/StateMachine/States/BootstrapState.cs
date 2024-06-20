@@ -1,5 +1,5 @@
 ﻿using Game.Blocks;
-using Game.Configs;
+using Game.Factory;
 using Game.Levels;
 using Game.Player;
 using Infrastructure.AssetManagement;

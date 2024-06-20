@@ -2,7 +2,7 @@
 using UnityEngine;
 using Utilities;
 
-namespace Game.Configs
+namespace Game.Levels
 {
 	[CreateAssetMenu(fileName = "Level List", menuName = SOPaths.BASE + "Level List", order = 0)]
 	public class LevelList : ScriptableObject

@@ -1,5 +1,4 @@
-﻿using Game.Configs;
-using Game.Levels;
+﻿using Game.Levels;
 using Infrastructure.SceneLoadSystem;
 
 namespace Game.StateMachine.States

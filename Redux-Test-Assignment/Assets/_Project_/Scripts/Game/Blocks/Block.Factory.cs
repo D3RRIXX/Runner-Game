@@ -2,6 +2,7 @@
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Game.Configs;
+using Game.Levels;
 using Infrastructure.AssetManagement;
 using Infrastructure.EventBus;
 using Infrastructure.PoolingSystem;

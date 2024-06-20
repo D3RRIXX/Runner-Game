@@ -1,9 +1,9 @@
 ﻿using Cysharp.Threading.Tasks;
-using Game.Configs;
+using Game.Levels;
 using Infrastructure.ServiceLocator;
 using UnityEngine;
 
-namespace Game
+namespace Game.Factory
 {
 	public interface IGameFactory : IService
 	{

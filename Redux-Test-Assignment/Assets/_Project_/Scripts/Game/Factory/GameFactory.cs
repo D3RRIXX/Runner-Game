@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Game.Blocks;
-using Game.Configs;
+using Game.Levels;
 using Game.Player;
 using UnityEngine;
 
-namespace Game
+namespace Game.Factory
 {
 	public class GameFactory : IGameFactory
 	{
-		private const int BLOCKS_AHEAD = 3;
+		private const int BLOCKS_AHEAD = 5;
 
 		private readonly Block.Factory _blockFactory;
 		private readonly PlayerFactory _playerFactory;

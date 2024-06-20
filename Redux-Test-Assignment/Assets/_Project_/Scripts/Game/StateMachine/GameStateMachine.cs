@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Game.Configs;
+using Game.Factory;
 using Game.Levels;
 using Game.StateMachine.States;
 using Infrastructure.EventBus;
@@ -21,7 +21,7 @@ namespace Game.StateMachine
 			{
 				[typeof(BootstrapState)] = new BootstrapState(this, services, levelList),
 				[typeof(LoadGameState)] = new LoadGameState(this, services.GetSingle<ISceneLoader>(), services.GetSingle<ILevelService>()),
-				[typeof(GameplayState)] = new GameplayState(services.GetSingle<IGameFactory>(), services.GetSingle<IEventService>()),
+				[typeof(GameplayState)] = new GameplayState(this, services.GetSingle<IGameFactory>(), services.GetSingle<IEventService>()),
 				[typeof(LevelCompleteState)] = new LevelCompleteState(),
 				[typeof(LevelFailedState)] = new LevelFailedState()
 			};

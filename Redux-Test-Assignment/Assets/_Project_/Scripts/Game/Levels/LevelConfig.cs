@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Game.Blocks;
+using Game.Configs;
 using UnityEngine;
 using Utilities;
 
-namespace Game.Configs
+namespace Game.Levels
 {
 	[CreateAssetMenu(fileName = "New Level Config", menuName = SOPaths.CONFIGS + "Level Config", order = 0)]
 	public class LevelConfig : ScriptableObject

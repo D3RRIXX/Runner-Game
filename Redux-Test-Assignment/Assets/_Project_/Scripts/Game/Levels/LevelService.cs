@@ -1,5 +1,4 @@
 ﻿using System;
-using Game.Configs;
 
 namespace Game.Levels
 {
