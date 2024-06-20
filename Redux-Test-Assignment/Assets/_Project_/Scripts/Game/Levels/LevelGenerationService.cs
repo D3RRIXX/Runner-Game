@@ -22,8 +22,12 @@ namespace Game.Levels
 			Vector2Int lengthRange = _levelGenerationConfig.LevelLengthRange;
 			int levelLength = Random.Range(lengthRange.x, lengthRange.y + 1);
 
-			var blocks = new List<BlockType>(levelLength);
-			for (int i = 0; i < levelLength; i++)
+			var blocks = new List<BlockType>(levelLength)
+			{
+				BlockType.Default
+			};
+			
+			for (int i = 1; i < levelLength; i++)
 			{
 				blocks.Add((BlockType)Random.Range(0, _blockTypes.Length));
 			}

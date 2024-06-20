@@ -37,6 +37,14 @@ MonoBehaviour:
     m_Address: Block Saw
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 3377ea16f195c8c43a011097ef634d4e
+    m_Address: Block Turn L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 77a2424778e9cf740b23ed18c554c86a
+    m_Address: Block Turn R
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 76e4bcc37d1e731458262d5252d2fa42, type: 2}
   m_SchemaSet:

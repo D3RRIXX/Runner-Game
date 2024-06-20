@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d73f9df876e045e6845eea761be1dfcc, type: 3}
   m_Name: Level Generation Config
   m_EditorClassIdentifier: 
-  _levelLengthRange: {x: 3, y: 10}
+  _levelLengthRange: {x: 5, y: 10}
   _blockPalette: {fileID: 11400000, guid: 1865dee833fa94148940b026cdb22edc, type: 2}
