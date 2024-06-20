@@ -17,6 +17,7 @@ namespace Game.Player
 		private Rigidbody _rb;
 		private bool _queueJump;
 		private bool _isGrounded;
+		private float _speedModifier = 1f;
 
 		/// <summary>
 		/// Observable that emits on player jump, containing current jump number
@@ -66,7 +67,7 @@ namespace Game.Player
 
 		private void MoveForward()
 		{
-			Vector3 velocity = transform.forward * _moveSpeed;
+			Vector3 velocity = transform.forward * (_speedModifier * _moveSpeed);
 			velocity.y = _rb.velocity.y;
 
 			_rb.velocity = velocity;
@@ -83,5 +84,7 @@ namespace Game.Player
 			_rb.velocity = new Vector3(velocity.x, 0f, velocity.y);
 			_rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 		}
+
+		public void SetSpeedModifier(float speedMultiplier) => _speedModifier = speedMultiplier;
 	}
 }

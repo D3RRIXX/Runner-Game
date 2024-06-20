@@ -11,7 +11,11 @@ namespace Game.Boosts
 		{
 			this.OnTriggerEnterAsObservable()
 			    .Where(x => x.CompareTag(Constants.PLAYER_TAG))
-			    .Subscribe(x => ApplyBoost(x.gameObject))
+			    .Subscribe(x =>
+			    {
+				    ApplyBoost(x.gameObject);
+				    gameObject.SetActive(false);
+			    })
 			    .AddTo(this);
 		}
 
