@@ -10,16 +10,19 @@ namespace Game.StateMachine.States
 		private readonly IGameStateMachine _gameStateMachine;
 		private readonly ISceneLoader _sceneLoader;
 		private readonly ILevelService _levelService;
+		private readonly LevelProgress _levelProgress;
 
-		public LoadGameState(IGameStateMachine gameStateMachine, ISceneLoader sceneLoader, ILevelService levelService)
+		public LoadGameState(IGameStateMachine gameStateMachine, ISceneLoader sceneLoader, ILevelService levelService, LevelProgress levelProgress)
 		{
 			_gameStateMachine = gameStateMachine;
 			_sceneLoader = sceneLoader;
 			_levelService = levelService;
+			_levelProgress = levelProgress;
 		}
 
 		public void OnEnter()
 		{
+			_levelProgress.CleanUp();
 			_sceneLoader.LoadScene(GAME_SCENE_PATH, OnGameSceneLoaded);
 		}
 

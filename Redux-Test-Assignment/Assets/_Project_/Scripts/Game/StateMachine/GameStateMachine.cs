@@ -20,9 +20,9 @@ namespace Game.StateMachine
 			_states = new Dictionary<Type, IExitableState>
 			{
 				[typeof(BootstrapState)] = new BootstrapState(this, services, levelList),
-				[typeof(LoadGameState)] = new LoadGameState(this, services.GetSingle<ISceneLoader>(), services.GetSingle<ILevelService>()),
-				[typeof(GameplayState)] = new GameplayState(this, services.GetSingle<IGameFactory>(), services.GetSingle<IEventService>()),
-				[typeof(LevelCompleteState)] = new LevelCompleteState(),
+				[typeof(LoadGameState)] = new LoadGameState(this, services.GetSingle<ISceneLoader>(), services.GetSingle<ILevelService>(), services.GetSingle<LevelProgress>()),
+				[typeof(GameplayState)] = new GameplayState(this, services.GetSingle<IGameFactory>(), services.GetSingle<IEventService>(), services.GetSingle<LevelProgress>()),
+				[typeof(LevelCompleteState)] = new LevelCompleteState(services.GetSingle<ILevelService>()),
 				[typeof(LevelFailedState)] = new LevelFailedState()
 			};
 		}

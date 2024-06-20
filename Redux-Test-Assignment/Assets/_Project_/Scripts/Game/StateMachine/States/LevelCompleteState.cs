@@ -1,8 +1,21 @@
-﻿namespace Game.StateMachine.States
+﻿using Game.Levels;
+
+namespace Game.StateMachine.States
 {
 	public class LevelCompleteState : IState
 	{
-		public void OnEnter() { }
+		private readonly ILevelService _levelService;
+
+		public LevelCompleteState(ILevelService levelService)
+		{
+			_levelService = levelService;
+		}
+
+		public void OnEnter()
+		{
+			_levelService.SetCurrentLevelCompleted();
+		}
+		
 		public void OnExit() { }
 	}
 }

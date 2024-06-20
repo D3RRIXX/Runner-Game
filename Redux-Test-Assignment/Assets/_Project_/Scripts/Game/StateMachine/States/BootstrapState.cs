@@ -38,6 +38,7 @@ namespace Game.StateMachine.States
 
 			services.RegisterSingle<IGameFactory>(new GameFactory(CreateBlockFactory(services), CreatePlayerFactory(services)));
 			services.RegisterSingle<IGameStateMachine>(_stateMachine);
+			services.RegisterSingle(new LevelProgress());
 		}
 
 		private static PlayerFactory CreatePlayerFactory(AllServices services)

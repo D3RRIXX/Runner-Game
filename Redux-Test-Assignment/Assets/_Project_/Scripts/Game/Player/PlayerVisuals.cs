@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UniRx;
+﻿using UniRx;
 using UnityEngine;
 
 namespace Game.Player
@@ -9,7 +8,6 @@ namespace Game.Player
 	{
 		[SerializeField] private MeshRenderer _shield;
 		[SerializeField] private PlayerHealth _playerHealth;
-		[SerializeField] private float _blinkInterval = 0.1f;
 
 		private Coroutine _blinkRoutine;
 
