@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace Game.Boosts
+namespace Game.BoostSystem
 {
 	public class BoostVisualsHandler : MonoBehaviour
 	{

@@ -1,7 +1,7 @@
 ﻿using Game.Player;
 using UnityEngine;
 
-namespace Game.Boosts
+namespace Game.BoostSystem.Boosts
 {
 	public class BoostHealthRegen : BoostBase
 	{

@@ -3,8 +3,9 @@ using UniRx.Triggers;
 using UnityEngine;
 using Utilities;
 
-namespace Game.Boosts
+namespace Game.BoostSystem
 {
+	[RequireComponent(typeof(Collider))]
 	public abstract class BoostBase : MonoBehaviour
 	{
 		private void Awake()

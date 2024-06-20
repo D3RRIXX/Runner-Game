@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4197876388497527149}
   - component: {fileID: 4197876388497527148}
+  - component: {fileID: 1989382928003465575}
   m_Layer: 0
   m_Name: Boost Base
   m_TagString: Untagged
@@ -45,7 +46,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _visualsRoot: {fileID: 4197876388579896073}
-  _rotationSpeed: 150
+  _rotationSpeed: 100
+--- !u!135 &1989382928003465575
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4197876388497527147}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &4197876388579896072
 GameObject:
   m_ObjectHideFlags: 0

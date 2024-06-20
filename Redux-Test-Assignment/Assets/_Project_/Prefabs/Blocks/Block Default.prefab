@@ -95,6 +95,36 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &3367896834327268453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4314543563922839362}
+  m_Layer: 0
+  m_Name: Boost Spawn Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4314543563922839362
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3367896834327268453}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3019271885032296377}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &24684394234185571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -174,9 +204,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da6c63604a6bad7479abeda890849092, type: 3}
+--- !u!1 &9079753418952677103 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9103588988035469708, guid: da6c63604a6bad7479abeda890849092,
+    type: 3}
+  m_PrefabInstance: {fileID: 24684394234185571}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3019271885032296377 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3004228173178046682, guid: da6c63604a6bad7479abeda890849092,
     type: 3}
   m_PrefabInstance: {fileID: 24684394234185571}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6106958378089619863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9079753418952677103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7def17b4bbe54d8bbb68da97774afea3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnPoint: {fileID: 4314543563922839362}
+  _possibleBoosts:
+  - BoostPrefab: {fileID: 5709348927485565860, guid: 134016d13b740384da3c499cc4eee46e,
+      type: 3}
+    Chance: 0.1
+  - BoostPrefab: {fileID: -3367417111485397302, guid: 0ec77e70a31d1034094cf04a3921c5e0,
+      type: 3}
+    Chance: 0.25
+  - BoostPrefab: {fileID: -7313990091831181580, guid: 05225783a18bb7942a7f2e053dd05029,
+      type: 3}
+    Chance: 0.15

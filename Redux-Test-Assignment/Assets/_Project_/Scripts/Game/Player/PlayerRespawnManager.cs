@@ -10,6 +10,8 @@ namespace Game.Player
 {
 	public class PlayerRespawnManager : MonoBehaviour
 	{
+		[SerializeField] private float _respawnInvincibility = 3f;
+		
 		private IEventService _eventService;
 		private Block _lastPassedBlock;
 		private IGameStateMachine _gameStateMachine;
@@ -46,7 +48,7 @@ namespace Game.Player
 			
 			Transform point = _lastPassedBlock.RespawnPoint;
 			player.transform.SetPositionAndRotation(point.position, point.rotation);
-			player.SetInvincible().Forget();
+			player.SetInvincible(_respawnInvincibility).Forget();
 		}
 	}
 }

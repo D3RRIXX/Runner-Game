@@ -29,6 +29,14 @@ MonoBehaviour:
     m_Address: Block Gap Long
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 032cc6462b1643c4e91418874da07510
+    m_Address: Block Finish
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 222725036523f4746be32da2f40c82d7
+    m_Address: Block Saw
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 76e4bcc37d1e731458262d5252d2fa42, type: 2}
   m_SchemaSet:

@@ -11,13 +11,11 @@ namespace Game.Player
 	public class PlayerHealth : MonoBehaviour
 	{
 		[SerializeField] private IntReactiveProperty _lives = new IntReactiveProperty(3);
-		[SerializeField] private float _invincibilityDuration = 3f;
 		
 		private IEventService _eventService;
 		private int _maxLives;
 		private readonly ReactiveProperty<bool> _isInvincible = new ReactiveProperty<bool>();
 
-		public float InvincibilityDuration => _invincibilityDuration;
 		public IReadOnlyReactiveProperty<int> Lives => _lives;
 		public IReadOnlyReactiveProperty<bool> IsInvincible => _isInvincible;
 		
@@ -25,11 +23,6 @@ namespace Game.Player
 		{
 			_maxLives = _lives.Value;
 			_eventService = AllServices.Container.GetSingle<IEventService>();
-			
-			_isInvincible.SkipLatestValueOnSubscribe()
-			             .Select(b => new PlayerInvincibilityEvent(this))
-			             .Subscribe(x => _eventService.Fire(x))
-			             .AddTo(this);
 		}
 
 		public void TakeDamage()
@@ -38,10 +31,14 @@ namespace Game.Player
 			_eventService.Fire(new PlayerDiedEvent(this));
 		}
 
-		public async UniTaskVoid SetInvincible()
+		public async UniTaskVoid SetInvincible(float duration)
 		{
 			_isInvincible.Value = true;
-			await UniTask.Delay(TimeSpan.FromSeconds(_invincibilityDuration));
+			_eventService.Fire(new PlayerInvincibilityEvent(isInvincible: true, duration));
+			
+			await UniTask.Delay(TimeSpan.FromSeconds(duration));
+			
+			_eventService.Fire(new PlayerInvincibilityEvent(isInvincible: false, 0f));
 			_isInvincible.Value = false;
 		}
 
