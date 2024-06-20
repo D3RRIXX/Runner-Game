@@ -2,7 +2,6 @@
 using Cysharp.Threading.Tasks;
 using Game.Blocks;
 using Game.Configs;
-using Game.Levels;
 using UnityEngine;
 
 namespace Game
@@ -12,19 +11,19 @@ namespace Game
 		private const int BLOCKS_AHEAD = 3;
 
 		private readonly Block.Factory _blockFactory;
-		private readonly LevelConfig _level;
 		private readonly List<Block> _activeBlocks = new List<Block>();
 
+		private LevelConfig _level;
 		private int _nextBlockIdx;
 
-		public GameFactory(ILevelService levelService, Block.Factory blockFactory)
+		public GameFactory(Block.Factory blockFactory)
 		{
 			_blockFactory = blockFactory;
-			_level = levelService.GetNextLevel();
 		}
 
-		public async UniTask WarmUp()
+		public async UniTask WarmUp(LevelConfig levelConfig)
 		{
+			_level = levelConfig;
 			await _blockFactory.WarmUp(_level);
 		}
 

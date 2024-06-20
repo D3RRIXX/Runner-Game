@@ -1,6 +1,8 @@
-﻿namespace Game.StateMachine.States
+﻿using Game.Configs;
+
+namespace Game.StateMachine.States
 {
-	public class GameplayState : IState
+	public class GameplayState : IState<LevelConfig>
 	{
 		private readonly IGameFactory _gameFactory;
 
@@ -11,9 +13,9 @@
 
 		public void OnExit() { }
 
-		public async void OnEnter()
+		public async void OnEnter(LevelConfig levelConfig)
 		{
-			await _gameFactory.WarmUp();
+			await _gameFactory.WarmUp(levelConfig);
 			await _gameFactory.CreateGameLevel();
 		}
 	}

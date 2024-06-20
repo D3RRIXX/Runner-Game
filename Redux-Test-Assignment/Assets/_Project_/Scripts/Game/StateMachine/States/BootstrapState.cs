@@ -11,37 +11,41 @@ namespace Game.StateMachine.States
 	public class BootstrapState : IState
 	{
 		private readonly IGameStateMachine _stateMachine;
+		private readonly ILevelService _levelService;
 
 		public BootstrapState(IGameStateMachine stateMachine, AllServices services, LevelList levelList)
 		{
 			_stateMachine = stateMachine;
 			RegisterServices(services, levelList);
+
+			_levelService = services.GetSingle<ILevelService>();
 		}
-		
+
 		public void OnEnter()
 		{
-			_stateMachine.Enter<LoadSceneState, string>("Game");
+			_stateMachine.Enter<LoadSceneState>();
 		}
+
 		public void OnExit() { }
-		
+
 		private void RegisterServices(AllServices services, LevelList levelList)
 		{
 			services.RegisterSingle<ISceneLoader>(new SceneLoader());
 			services.RegisterSingle<ILevelService>(new LevelService(levelList));
 			services.RegisterSingle<IAssetProvider>(new AssetProvider());
 			services.RegisterSingle<IEventService>(new EventService());
-			RegisterPoolingManager();
+			services.RegisterSingle<IPoolingManager>(CreatePoolingManager());
 
-			services.RegisterSingle<IGameFactory>(new GameFactory(services.GetSingle<ILevelService>(), CreateBlockFactory()));
+			services.RegisterSingle<IGameFactory>(new GameFactory(CreateBlockFactory()));
 			services.RegisterSingle<IGameStateMachine>(_stateMachine);
 		}
 
-		private void RegisterPoolingManager()
+		private static PoolingManager CreatePoolingManager()
 		{
 			var poolParent = new GameObject("Pools").transform;
 			Object.DontDestroyOnLoad(poolParent);
-			
-			AllServices.Container.RegisterSingle<IPoolingManager>(new PoolingManager(poolParent));
+
+			return new PoolingManager(poolParent);
 		}
 
 		private static Block.Factory CreateBlockFactory()
