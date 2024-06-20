@@ -36,7 +36,6 @@ namespace Game.Factory
 		{
 			foreach (Block block in _activeBlocks)
 			{
-				block.Dispose();
 				Object.Destroy(block.gameObject);
 			}
 

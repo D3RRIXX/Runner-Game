@@ -4,8 +4,6 @@ using Cysharp.Threading.Tasks;
 using Game.Configs;
 using Game.Levels;
 using Infrastructure.AssetManagement;
-using Infrastructure.EventBus;
-using Infrastructure.PoolingSystem;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -16,17 +14,13 @@ namespace Game.Blocks
 		public class Factory
 		{
 			private readonly IAssetProvider _assetProvider;
-			private readonly IEventService _eventService;
-			private readonly IPoolingManager _poolingManager;
-			
+
 			private Transform _parent;
 			private BlockPalette _blockPalette;
 
-			public Factory(IAssetProvider assetProvider, IPoolingManager poolingManager, IEventService eventService)
+			public Factory(IAssetProvider assetProvider)
 			{
 				_assetProvider = assetProvider;
-				_poolingManager = poolingManager;
-				_eventService = eventService;
 			}
 
 			public async UniTask WarmUp(LevelConfig level)
@@ -41,10 +35,8 @@ namespace Game.Blocks
 			public async UniTask<Block> InstantiateBlock(BlockType blockType, Vector3 position, Quaternion rotation)
 			{
 				var prefab = await _assetProvider.Load<GameObject>(GetBlockPrefabRef(blockType));
-				// Block block = _poolingManager.Get(prefab.GetComponent<Block>(), position, rotation, _parent);
 				Block block = Instantiate(prefab, position, rotation, _parent).GetComponent<Block>();
 				block.gameObject.SetActive(true);
-				block.Construct(_poolingManager, _eventService, blockType);
 				
 				return block;
 			}

@@ -4,10 +4,8 @@ using Game.Levels;
 using Game.Player;
 using Infrastructure.AssetManagement;
 using Infrastructure.EventBus;
-using Infrastructure.PoolingSystem;
 using Infrastructure.SceneLoadSystem;
 using Infrastructure.ServiceLocator;
-using UnityEngine;
 
 namespace Game.StateMachine.States
 {
@@ -34,7 +32,6 @@ namespace Game.StateMachine.States
 			services.RegisterSingle<ILevelService>(new LevelGenerationService(levelGenerationConfig));
 			services.RegisterSingle<IAssetProvider>(new AssetProvider());
 			services.RegisterSingle<IEventService>(new EventService());
-			services.RegisterSingle<IPoolingManager>(CreatePoolingManager());
 
 			services.RegisterSingle<IGameFactory>(new GameFactory(CreateBlockFactory(services), CreatePlayerFactory(services), new UIFactory(services.GetSingle<IAssetProvider>())));
 			services.RegisterSingle<IGameStateMachine>(_stateMachine);
@@ -42,26 +39,7 @@ namespace Game.StateMachine.States
 			services.RegisterSingle<IPlayerRespawnManager>(new PlayerRespawnManager(services.GetSingle<IEventService>(), services.GetSingle<IGameStateMachine>(), services.GetSingle<LevelState>()));
 		}
 
-		private static PlayerFactory CreatePlayerFactory(AllServices services)
-		{
-			return new PlayerFactory(services.GetSingle<IAssetProvider>());
-		}
-
-		private static PoolingManager CreatePoolingManager()
-		{
-			var poolParent = new GameObject("Pools").transform;
-			Object.DontDestroyOnLoad(poolParent);
-
-			return new PoolingManager(poolParent);
-		}
-
-		private static Block.Factory CreateBlockFactory(AllServices services)
-		{
-			var assetProvider = services.GetSingle<IAssetProvider>();
-			var poolingManager = services.GetSingle<IPoolingManager>();
-			var eventService = services.GetSingle<IEventService>();
-
-			return new Block.Factory(assetProvider, poolingManager, eventService);
-		}
+		private static PlayerFactory CreatePlayerFactory(AllServices services) => new PlayerFactory(services.GetSingle<IAssetProvider>());
+		private static Block.Factory CreateBlockFactory(AllServices services) => new Block.Factory(services.GetSingle<IAssetProvider>());
 	}
 }
