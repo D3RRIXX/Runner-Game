@@ -1,31 +1,37 @@
 ﻿using Game.Blocks;
 using Game.Events;
+using Game.Levels;
 using Game.StateMachine;
 using Game.StateMachine.States;
 using Infrastructure.EventBus;
-using Infrastructure.ServiceLocator;
 using UnityEngine;
 
 namespace Game.Player
 {
-	public class PlayerRespawnManager : MonoBehaviour
+	public class PlayerRespawnManager : IPlayerRespawnManager
 	{
-		[SerializeField] private float _respawnInvincibility = 3f;
-		
-		private IEventService _eventService;
+		private const float RESPAWN_INVINCIBILITY = 3f;
+
+		private readonly IEventService _eventService;
+		private readonly IGameStateMachine _gameStateMachine;
+		private readonly LevelState _levelState;
+
 		private Block _lastPassedBlock;
-		private IGameStateMachine _gameStateMachine;
 
-		private void Awake()
+		public PlayerRespawnManager(IEventService eventService, IGameStateMachine gameStateMachine, LevelState levelState)
 		{
-			_eventService = AllServices.Container.GetSingle<IEventService>();
-			_gameStateMachine = AllServices.Container.GetSingle<IGameStateMachine>();
+			_eventService = eventService;
+			_gameStateMachine = gameStateMachine;
+			_levelState = levelState;
+		}
 
+		public void Initialize()
+		{
 			_eventService.Subscribe<BlockPassedEvent>(OnBlockPassed);
 			_eventService.Subscribe<PlayerDiedEvent>(OnPlayerDied);
 		}
 
-		private void OnDestroy()
+		public void Dispose()
 		{
 			_eventService.Unsubscribe<BlockPassedEvent>(OnBlockPassed);
 			_eventService.Unsubscribe<PlayerDiedEvent>(OnPlayerDied);
@@ -33,8 +39,17 @@ namespace Game.Player
 
 		private void OnBlockPassed(BlockPassedEvent evt)
 		{
-			Debug.Log($"Player passed {evt.Block.BlockType} block", evt.Block);
 			_lastPassedBlock = evt.Block;
+		}
+
+		public void RespawnPlayer(PlayerHealth player, bool withFullHealth = false)
+		{
+			if (withFullHealth)
+				player.RestoreLives(player.MaxLives);
+			
+			Transform point = _lastPassedBlock.RespawnPoint;
+			player.transform.SetPositionAndRotation(point.position, point.rotation);
+			player.SetInvincible(RESPAWN_INVINCIBILITY).Forget();
 		}
 
 		private void OnPlayerDied(PlayerDiedEvent evt)
@@ -45,10 +60,8 @@ namespace Game.Player
 				_gameStateMachine.Enter<LevelFailedState>();
 				return;
 			}
-			
-			Transform point = _lastPassedBlock.RespawnPoint;
-			player.transform.SetPositionAndRotation(point.position, point.rotation);
-			player.SetInvincible(_respawnInvincibility).Forget();
+
+			RespawnPlayer(player);
 		}
 	}
 }

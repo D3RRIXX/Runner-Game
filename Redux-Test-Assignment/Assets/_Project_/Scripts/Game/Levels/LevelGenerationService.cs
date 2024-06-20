@@ -26,13 +26,29 @@ namespace Game.Levels
 			{
 				BlockType.Default
 			};
-			
+
+			var prevBlockType = BlockType.Default;
 			for (int i = 1; i < levelLength; i++)
 			{
-				blocks.Add((BlockType)Random.Range(0, _blockTypes.Length));
+				BlockType blockType;
+				do
+				{
+					blockType = (BlockType)Random.Range(0, _blockTypes.Length);
+				} while (!BlockTypeIsValid(blockType, prevBlockType));
+				
+				blocks.Add(blockType);
+				prevBlockType = blockType;
 			}
 
 			return new LevelConfig(blocks, _levelGenerationConfig.BlockPalette);
+		}
+
+		private bool BlockTypeIsValid(BlockType blockType, BlockType prevBlockType)
+		{
+			if (prevBlockType == BlockType.TurnL || prevBlockType == BlockType.TurnR)
+				return blockType != BlockType.TurnL && blockType != BlockType.TurnR;
+			
+			return true;
 		}
 	}
 }

@@ -39,6 +39,7 @@ namespace Game.StateMachine.States
 			services.RegisterSingle<IGameFactory>(new GameFactory(CreateBlockFactory(services), CreatePlayerFactory(services), new UIFactory(services.GetSingle<IAssetProvider>())));
 			services.RegisterSingle<IGameStateMachine>(_stateMachine);
 			services.RegisterSingle(new LevelState());
+			services.RegisterSingle<IPlayerRespawnManager>(new PlayerRespawnManager(services.GetSingle<IEventService>(), services.GetSingle<IGameStateMachine>(), services.GetSingle<LevelState>()));
 		}
 
 		private static PlayerFactory CreatePlayerFactory(AllServices services)

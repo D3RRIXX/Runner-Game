@@ -43,6 +43,7 @@ namespace Game.Factory
 			if (_nextBlockIdx == _level.Blocks.Count)
 			{
 				SpawnFinishBlock();
+				_nextBlockIdx++;
 				return null;
 			}
 

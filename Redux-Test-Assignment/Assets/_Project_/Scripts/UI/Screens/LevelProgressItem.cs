@@ -12,7 +12,7 @@ namespace UI.Screens
 		public void Construct(BlockType blockType, int passed)
 		{
 			_blockLabel.text = blockType.ToString();
-			_blockLabel.text = passed.ToString();
+			_passedLabel.text = passed.ToString();
 		}
 	}
 }

@@ -13,15 +13,15 @@ namespace Game.Player
 		[SerializeField] private IntReactiveProperty _lives = new IntReactiveProperty(3);
 		
 		private IEventService _eventService;
-		private int _maxLives;
 		private readonly ReactiveProperty<bool> _isInvincible = new ReactiveProperty<bool>();
 
+		public int MaxLives { get; private set; }
 		public IReadOnlyReactiveProperty<int> Lives => _lives;
 		public IReadOnlyReactiveProperty<bool> IsInvincible => _isInvincible;
-		
+
 		private void Awake()
 		{
-			_maxLives = _lives.Value;
+			MaxLives = _lives.Value;
 			_eventService = AllServices.Container.GetSingle<IEventService>();
 		}
 
@@ -44,7 +44,7 @@ namespace Game.Player
 
 		public void RestoreLives(int livesToRestore)
 		{
-			_lives.Value = Mathf.Min(_lives.Value + livesToRestore, _maxLives);
+			_lives.Value = Mathf.Min(_lives.Value + livesToRestore, MaxLives);
 		}
 	}
 }

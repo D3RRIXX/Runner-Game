@@ -18,13 +18,15 @@ namespace Game.StateMachine.States
 		private readonly IGameFactory _gameFactory;
 		private readonly IEventService _eventService;
 		private readonly LevelState _levelState;
+		private readonly IPlayerRespawnManager _respawnManager;
 
-		public GameplayState(IGameStateMachine gameStateMachine, IGameFactory gameFactory, IEventService eventService, LevelState levelState)
+		public GameplayState(IGameStateMachine gameStateMachine, IGameFactory gameFactory, IEventService eventService, LevelState levelState, IPlayerRespawnManager respawnManager)
 		{
 			_gameStateMachine = gameStateMachine;
 			_gameFactory = gameFactory;
 			_eventService = eventService;
 			_levelState = levelState;
+			_respawnManager = respawnManager;
 		}
 
 		public async void OnEnter(LevelConfig levelConfig)
@@ -66,7 +68,7 @@ namespace Game.StateMachine.States
 
 		private void OnBlockPassed(BlockPassedEvent evt)
 		{
-			Debug.Log($"Player passed {evt.Block.BlockType} block", evt.Block);
+			_levelState.BlocksPassed++;
 			SpawnNextBlock().Forget();
 		}
 

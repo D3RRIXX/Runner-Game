@@ -252,5 +252,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Obstacle Saw
       objectReference: {fileID: 0}
+    - target: {fileID: 5218882300738255622, guid: d1224eca565c47847adac50d68b64a44,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5218882300738255622, guid: d1224eca565c47847adac50d68b64a44,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630904511705955055, guid: d1224eca565c47847adac50d68b64a44,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630904511705955055, guid: d1224eca565c47847adac50d68b64a44,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.061854616
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1224eca565c47847adac50d68b64a44, type: 3}
