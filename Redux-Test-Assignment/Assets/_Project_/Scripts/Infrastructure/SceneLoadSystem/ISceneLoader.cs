@@ -1,7 +1,7 @@
 ﻿using System;
 using Infrastructure.ServiceLocator;
 
-namespace Game.StateMachine
+namespace Infrastructure.SceneLoadSystem
 {
 	public interface ISceneLoader : IService
 	{

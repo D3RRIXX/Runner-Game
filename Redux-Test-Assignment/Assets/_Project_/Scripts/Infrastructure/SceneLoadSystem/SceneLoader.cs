@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 
-namespace Game.StateMachine
+namespace Infrastructure.SceneLoadSystem
 {
 	public class SceneLoader : ISceneLoader
 	{

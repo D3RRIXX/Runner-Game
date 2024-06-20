@@ -1,8 +1,11 @@
 ﻿using Game.Blocks;
 using Game.Configs;
 using Game.Levels;
+using Game.Player;
+using Infrastructure.AssetManagement;
 using Infrastructure.EventBus;
 using Infrastructure.PoolingSystem;
+using Infrastructure.SceneLoadSystem;
 using Infrastructure.ServiceLocator;
 using UnityEngine;
 
@@ -11,19 +14,16 @@ namespace Game.StateMachine.States
 	public class BootstrapState : IState
 	{
 		private readonly IGameStateMachine _stateMachine;
-		private readonly ILevelService _levelService;
 
 		public BootstrapState(IGameStateMachine stateMachine, AllServices services, LevelList levelList)
 		{
 			_stateMachine = stateMachine;
 			RegisterServices(services, levelList);
-
-			_levelService = services.GetSingle<ILevelService>();
 		}
 
 		public void OnEnter()
 		{
-			_stateMachine.Enter<LoadSceneState>();
+			_stateMachine.Enter<LoadGameState>();
 		}
 
 		public void OnExit() { }
@@ -36,8 +36,13 @@ namespace Game.StateMachine.States
 			services.RegisterSingle<IEventService>(new EventService());
 			services.RegisterSingle<IPoolingManager>(CreatePoolingManager());
 
-			services.RegisterSingle<IGameFactory>(new GameFactory(CreateBlockFactory()));
+			services.RegisterSingle<IGameFactory>(new GameFactory(CreateBlockFactory(services), CreatePlayerFactory(services)));
 			services.RegisterSingle<IGameStateMachine>(_stateMachine);
+		}
+
+		private static PlayerFactory CreatePlayerFactory(AllServices services)
+		{
+			return new PlayerFactory(services.GetSingle<IAssetProvider>());
 		}
 
 		private static PoolingManager CreatePoolingManager()
@@ -48,11 +53,11 @@ namespace Game.StateMachine.States
 			return new PoolingManager(poolParent);
 		}
 
-		private static Block.Factory CreateBlockFactory()
+		private static Block.Factory CreateBlockFactory(AllServices services)
 		{
-			var assetProvider = AllServices.Container.GetSingle<IAssetProvider>();
-			var poolingManager = AllServices.Container.GetSingle<IPoolingManager>();
-			var eventService = AllServices.Container.GetSingle<IEventService>();
+			var assetProvider = services.GetSingle<IAssetProvider>();
+			var poolingManager = services.GetSingle<IPoolingManager>();
+			var eventService = services.GetSingle<IEventService>();
 
 			return new Block.Factory(assetProvider, poolingManager, eventService);
 		}

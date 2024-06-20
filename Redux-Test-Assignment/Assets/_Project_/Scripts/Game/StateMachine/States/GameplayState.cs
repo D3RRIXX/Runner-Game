@@ -11,12 +11,12 @@ namespace Game.StateMachine.States
 			_gameFactory = gameFactory;
 		}
 
-		public void OnExit() { }
-
 		public async void OnEnter(LevelConfig levelConfig)
 		{
 			await _gameFactory.WarmUp(levelConfig);
 			await _gameFactory.CreateGameLevel();
 		}
+
+		public void OnExit() { }
 	}
 }

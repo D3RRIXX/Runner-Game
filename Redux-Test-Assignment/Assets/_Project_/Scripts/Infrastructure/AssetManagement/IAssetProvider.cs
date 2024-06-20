@@ -2,10 +2,11 @@
 using Infrastructure.ServiceLocator;
 using UnityEngine.AddressableAssets;
 
-namespace Game
+namespace Infrastructure.AssetManagement
 {
 	public interface IAssetProvider : IService
 	{
 		UniTask<T> Load<T>(AssetReference assetReference) where T : class;
+		UniTask<T> Load<T>(string key) where T : class;
 	}
 }

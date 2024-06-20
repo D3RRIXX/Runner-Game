@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Game.Configs;
 using Game.Levels;
 using Game.StateMachine.States;
+using Infrastructure.SceneLoadSystem;
 using Infrastructure.ServiceLocator;
 using UniRx;
 
@@ -18,8 +19,10 @@ namespace Game.StateMachine
 			_states = new Dictionary<Type, IExitableState>
 			{
 				[typeof(BootstrapState)] = new BootstrapState(this, services, levelList),
-				[typeof(LoadSceneState)] = new LoadSceneState(this, services.GetSingle<ISceneLoader>(), services.GetSingle<ILevelService>()),
-				[typeof(GameplayState)] = new GameplayState(services.GetSingle<IGameFactory>())
+				[typeof(LoadGameState)] = new LoadGameState(this, services.GetSingle<ISceneLoader>(), services.GetSingle<ILevelService>()),
+				[typeof(GameplayState)] = new GameplayState(services.GetSingle<IGameFactory>()),
+				[typeof(LevelCompleteState)] = new LevelCompleteState(),
+				[typeof(LevelFailedState)] = new LevelFailedState()
 			};
 		}
 

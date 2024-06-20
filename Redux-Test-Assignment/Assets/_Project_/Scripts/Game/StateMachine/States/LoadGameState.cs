@@ -1,9 +1,10 @@
 ﻿using Game.Configs;
 using Game.Levels;
+using Infrastructure.SceneLoadSystem;
 
 namespace Game.StateMachine.States
 {
-	public class LoadSceneState : IState
+	public class LoadGameState : IState
 	{
 		private const string GAME_SCENE_PATH = "Game";
 		
@@ -11,7 +12,7 @@ namespace Game.StateMachine.States
 		private readonly ISceneLoader _sceneLoader;
 		private readonly ILevelService _levelService;
 
-		public LoadSceneState(IGameStateMachine gameStateMachine, ISceneLoader sceneLoader, ILevelService levelService)
+		public LoadGameState(IGameStateMachine gameStateMachine, ISceneLoader sceneLoader, ILevelService levelService)
 		{
 			_gameStateMachine = gameStateMachine;
 			_sceneLoader = sceneLoader;
