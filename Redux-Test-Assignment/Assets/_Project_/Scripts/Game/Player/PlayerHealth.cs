@@ -14,6 +14,7 @@ namespace Game.Player
 		[SerializeField] private float _invincibilityDuration = 3f;
 		
 		private IEventService _eventService;
+		private int _maxLives;
 		private readonly ReactiveProperty<bool> _isInvincible = new ReactiveProperty<bool>();
 
 		public float InvincibilityDuration => _invincibilityDuration;
@@ -22,6 +23,7 @@ namespace Game.Player
 		
 		private void Awake()
 		{
+			_maxLives = _lives.Value;
 			_eventService = AllServices.Container.GetSingle<IEventService>();
 			
 			_isInvincible.SkipLatestValueOnSubscribe()
@@ -41,6 +43,11 @@ namespace Game.Player
 			_isInvincible.Value = true;
 			await UniTask.Delay(TimeSpan.FromSeconds(_invincibilityDuration));
 			_isInvincible.Value = false;
+		}
+
+		public void RestoreLives(int livesToRestore)
+		{
+			_lives.Value = Mathf.Min(_lives.Value + livesToRestore, _maxLives);
 		}
 	}
 }
