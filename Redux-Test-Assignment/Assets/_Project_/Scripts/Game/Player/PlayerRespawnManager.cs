@@ -42,8 +42,9 @@ namespace Game.Player
 			_lastPassedBlock = evt.Block;
 		}
 
-		public void RespawnPlayer(PlayerHealth player, bool withFullHealth = false)
+		public void RespawnPlayer(bool withFullHealth = false)
 		{
+			PlayerHealth player = _levelState.Player;
 			if (withFullHealth)
 				player.RestoreLives(player.MaxLives);
 			
@@ -61,7 +62,7 @@ namespace Game.Player
 				return;
 			}
 
-			RespawnPlayer(player);
+			RespawnPlayer();
 		}
 	}
 }

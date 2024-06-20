@@ -6,6 +6,6 @@ namespace Game.Player
 	public interface IPlayerRespawnManager : IService, IDisposable
 	{
 		void Initialize();
-		void RespawnPlayer(PlayerHealth player, bool withFullHealth = false);
+		void RespawnPlayer(bool withFullHealth = false);
 	}
 }
