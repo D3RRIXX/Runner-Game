@@ -38,7 +38,7 @@ namespace Game
 
 			for (int i = 0; i < BLOCKS_AHEAD; i++)
 			{
-				BlockType blockType = _level.Layout[i];
+				BlockType blockType = _level.Blocks[i];
 				Block block = await _blockFactory.InstantiateBlock(blockType, position, rotation);
 				(position, rotation) = block.NextBlockSpawnTransform;
 
@@ -52,19 +52,33 @@ namespace Game
 
 		public async void SpawnNextBlock()
 		{
-			if (_nextBlockIdx >= _level.Layout.Count)
+			if (_nextBlockIdx > _level.Blocks.Count)
 				return;
-			
+
+			if (_nextBlockIdx == _level.Blocks.Count)
+			{
+				SpawnFinishBlock();
+				return;
+			}
+
 			TryDespawnFirstActiveBlock();
 
 			Block lastBlock = _activeBlocks[_activeBlocks.Count - 1];
 			(Vector3 position, Quaternion rotation) = lastBlock.NextBlockSpawnTransform;
 
-			BlockType blockType = _level.Layout[_nextBlockIdx];
+			BlockType blockType = _level.Blocks[_nextBlockIdx];
 			Block block = await _blockFactory.InstantiateBlock(blockType, position, rotation);
 			_activeBlocks.Add(block);
 
 			_nextBlockIdx++;
+		}
+
+		private async void SpawnFinishBlock()
+		{
+			Block lastBlock = _activeBlocks[_activeBlocks.Count - 1];
+			(Vector3 position, Quaternion rotation) = lastBlock.NextBlockSpawnTransform;
+
+			await _blockFactory.InstantiateFinishBlock(position, rotation);
 		}
 
 		private void TryDespawnFirstActiveBlock()
@@ -74,7 +88,7 @@ namespace Game
 
 			Block firstBlock = _activeBlocks[0];
 			firstBlock.Dispose();
-			
+
 			_activeBlocks.RemoveAt(0);
 		}
 	}

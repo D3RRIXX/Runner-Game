@@ -33,7 +33,7 @@ namespace Game.Blocks
 				_blockPalette = level.BlockPalette;
 				_parent = new GameObject("Blocks").transform;
 				
-				IEnumerable<AssetReferenceGameObject> prefabRefs = level.Layout.Distinct().Select(GetBlockPrefabRef);
+				IEnumerable<AssetReferenceGameObject> prefabRefs = level.Blocks.Distinct().Select(GetBlockPrefabRef);
 				await UniTask.WhenAll(prefabRefs.Select(_assetProvider.Load<GameObject>));
 			}
 
@@ -45,6 +45,12 @@ namespace Game.Blocks
 				block.OnSpawned(_poolingManager, _eventService, blockType);
 				
 				return block;
+			}
+
+			public async UniTask<GameObject> InstantiateFinishBlock(Vector3 position, Quaternion rotation)
+			{
+				var prefab = await _assetProvider.Load<GameObject>(_blockPalette.FinishBlock);
+				return Instantiate(prefab, position, rotation);
 			}
 
 			private AssetReferenceGameObject GetBlockPrefabRef(BlockType blockType) => _blockPalette[blockType];

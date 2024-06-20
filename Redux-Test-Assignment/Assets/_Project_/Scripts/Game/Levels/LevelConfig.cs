@@ -11,7 +11,7 @@ namespace Game.Configs
 		[SerializeField] private BlockType[] _layout;
 		[SerializeField] private BlockPalette _blockPalette;
 
-		public IReadOnlyList<BlockType> Layout => _layout;
+		public IReadOnlyList<BlockType> Blocks => _layout;
 		public BlockPalette BlockPalette => _blockPalette;
 	}
 }
