@@ -23,7 +23,7 @@ namespace UI
 
 		private void OnClick()
 		{
-			_playerRespawnManager.RespawnPlayer();
+			_playerRespawnManager.RespawnPlayer(withFullHealth: true);
 			_gameStateMachine.Enter<GameplayState>();
 		}
 	}
