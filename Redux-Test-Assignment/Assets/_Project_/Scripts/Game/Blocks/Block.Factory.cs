@@ -42,7 +42,7 @@ namespace Game.Blocks
 				var prefab = await _assetProvider.Load<GameObject>(GetBlockPrefabRef(blockType));
 				Block block = _poolingManager.Get(prefab.GetComponent<Block>(), position, rotation, _parent);
 				block.gameObject.SetActive(true);
-				block.OnSpawned(_poolingManager, _eventService, blockType);
+				block.Construct(_poolingManager, _eventService, blockType);
 				
 				return block;
 			}
