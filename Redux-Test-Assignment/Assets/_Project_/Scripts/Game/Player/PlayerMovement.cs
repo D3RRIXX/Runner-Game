@@ -48,7 +48,6 @@ namespace Game.Player
 			_gameStateMachine = AllServices.Container.GetSingle<IGameStateMachine>();
 
 			_gameStateMachine.ObserveStateChangedTo<GameplayState>()
-			                 .First()
 			                 .Subscribe(_ => OnGameStarted())
 			                 .AddTo(_disposables);
 		}

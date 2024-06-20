@@ -12,25 +12,23 @@ namespace Game.Player
 		[SerializeField] private CinemachineVirtualCamera _virtualCamera;
 		
 		private IGameStateMachine _gameStateMachine;
+		private Transform _player;
 
 		public void Construct(Transform player)
 		{
-			_virtualCamera.Follow = player;
-			_virtualCamera.LookAt = player;
+			_player = player;
 		}
 
 		private void Awake()
 		{
 			_gameStateMachine = AllServices.Container.GetSingle<IGameStateMachine>();
-
-			_gameStateMachine.CurrentState.SkipLatestValueOnSubscribe()
-			                 .First(x => !(x is GameplayState))
-			                 .Subscribe(_ =>
-			                 {
-				                 _virtualCamera.Follow = null;
-				                 _virtualCamera.LookAt = null;
-			                 })
+			
+			_gameStateMachine.CurrentState
+			                 .Select(x => x is GameplayState ? _player : null)
+			                 .Subscribe(SetTarget)
 			                 .AddTo(this);
 		}
+
+		private void SetTarget(Transform target) => _virtualCamera.Follow = _virtualCamera.LookAt = target;
 	}
 }
