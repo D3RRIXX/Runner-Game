@@ -13,7 +13,6 @@ namespace Game.StateMachine.States
 
 		public void OnEnter()
 		{
-			_levelService.SetCurrentLevelCompleted();
 		}
 		
 		public void OnExit() { }

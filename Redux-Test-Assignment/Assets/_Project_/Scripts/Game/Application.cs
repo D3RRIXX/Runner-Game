@@ -6,9 +6,9 @@ namespace Game
 {
 	public class Application
 	{
-		public Application(LevelList levelList)
+		public Application(LevelGenerationConfig levelGenerationConfig)
 		{
-			StateMachine = new GameStateMachine(AllServices.Container, levelList);
+			StateMachine = new GameStateMachine(AllServices.Container, levelGenerationConfig);
 		}
 		public IGameStateMachine StateMachine { get; }
 	}

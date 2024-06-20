@@ -1,5 +1,9 @@
 ﻿using System;
+using Game.StateMachine;
+using Game.StateMachine.States;
+using Infrastructure.ServiceLocator;
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 namespace Game.Player
@@ -14,7 +18,11 @@ namespace Game.Player
 		[SerializeField] private LayerMask _groundMask;
 
 		private readonly ReactiveProperty<int> _currentJumpNumber = new ReactiveProperty<int>();
+		private readonly CompositeDisposable _disposables = new CompositeDisposable();
+		
 		private Rigidbody _rb;
+		private IGameStateMachine _gameStateMachine;
+		
 		private bool _queueJump;
 		private bool _isGrounded;
 		private float _speedModifier = 1f;
@@ -37,16 +45,43 @@ namespace Game.Player
 		private void Awake()
 		{
 			_rb = GetComponent<Rigidbody>();
-			JumpStream.Subscribe(x => Debug.Log($"Current jump num is {x}")).AddTo(this);
+			_gameStateMachine = AllServices.Container.GetSingle<IGameStateMachine>();
+
+			_gameStateMachine.ObserveStateChangedTo<GameplayState>()
+			                 .First()
+			                 .Subscribe(_ => OnGameStarted())
+			                 .AddTo(_disposables);
 		}
 
-		private void Update()
+		private void OnDestroy()
+		{
+			_disposables.Dispose();
+		}
+
+		private void OnGameStarted()
+		{
+			var stateChangedStream = _gameStateMachine.CurrentState.SkipLatestValueOnSubscribe().First(x => !(x is GameplayState));
+
+			this.UpdateAsObservable()
+			    .TakeUntil(stateChangedStream)
+			    .Subscribe(_ => OnUpdate())
+			    .AddTo(_disposables);
+
+			this.FixedUpdateAsObservable()
+			    .TakeUntil(stateChangedStream)
+			    .Subscribe(_ => OnFixedUpdate())
+			    .AddTo(_disposables);
+
+			stateChangedStream.Subscribe(_ => _rb.velocity = Vector3.zero).AddTo(_disposables);
+		}
+
+		private void OnUpdate()
 		{
 			if (Input.GetMouseButtonDown(0) && CanJump)
 				_queueJump = true;
 		}
 
-		private void FixedUpdate()
+		private void OnFixedUpdate()
 		{
 			_isGrounded = HasGroundUnderneath();
 			if (_queueJump)

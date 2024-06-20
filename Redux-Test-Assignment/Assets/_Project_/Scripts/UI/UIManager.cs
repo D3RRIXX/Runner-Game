@@ -17,7 +17,7 @@ namespace UI
 
 		private void Reset()
 		{
-			_screens = GetComponentsInChildren<UIScreen>();
+			_screens = GetComponentsInChildren<UIScreen>(includeInactive: true);
 		}
 
 		private void Awake()

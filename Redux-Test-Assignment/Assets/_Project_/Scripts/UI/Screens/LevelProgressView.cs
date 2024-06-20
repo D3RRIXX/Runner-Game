@@ -21,7 +21,7 @@ namespace UI.Screens
 
 		private void OnEnable()
 		{
-			var lookup = _levelState.Config.Blocks.Take(_levelState.BlocksPassed)
+			var lookup = _levelState.Level.Blocks.Take(_levelState.BlocksPassed)
 			                           .GroupBy(x => x)
 			                           .ToDictionary(x => x.Key, x => x.Count());
 

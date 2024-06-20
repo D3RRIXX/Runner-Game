@@ -4,8 +4,6 @@ namespace Game.Levels
 {
 	public interface ILevelService : IService
 	{
-		int CurrentLevelIdx { get; }
 		LevelConfig GetNextLevel();
-		void SetCurrentLevelCompleted();
 	}
 }

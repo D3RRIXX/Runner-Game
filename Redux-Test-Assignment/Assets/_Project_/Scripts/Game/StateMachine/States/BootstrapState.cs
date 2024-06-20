@@ -15,10 +15,10 @@ namespace Game.StateMachine.States
 	{
 		private readonly IGameStateMachine _stateMachine;
 
-		public BootstrapState(IGameStateMachine stateMachine, AllServices services, LevelList levelList)
+		public BootstrapState(IGameStateMachine stateMachine, AllServices services, LevelGenerationConfig levelGenerationConfig)
 		{
 			_stateMachine = stateMachine;
-			RegisterServices(services, levelList);
+			RegisterServices(services, levelGenerationConfig);
 		}
 
 		public void OnEnter()
@@ -28,10 +28,10 @@ namespace Game.StateMachine.States
 
 		public void OnExit() { }
 
-		private void RegisterServices(AllServices services, LevelList levelList)
+		private void RegisterServices(AllServices services, LevelGenerationConfig levelGenerationConfig)
 		{
 			services.RegisterSingle<ISceneLoader>(new SceneLoader());
-			services.RegisterSingle<ILevelService>(new LevelService(levelList));
+			services.RegisterSingle<ILevelService>(new LevelGenerationService(levelGenerationConfig));
 			services.RegisterSingle<IAssetProvider>(new AssetProvider());
 			services.RegisterSingle<IEventService>(new EventService());
 			services.RegisterSingle<IPoolingManager>(CreatePoolingManager());

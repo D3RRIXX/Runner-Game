@@ -15,11 +15,11 @@ namespace Game.StateMachine
 		private readonly Dictionary<Type, IExitableState> _states;
 		private readonly ReactiveProperty<IExitableState> _currentState = new ReactiveProperty<IExitableState>();
 
-		public GameStateMachine(AllServices services, LevelList levelList)
+		public GameStateMachine(AllServices services, LevelGenerationConfig levelGenerationConfig)
 		{
 			_states = new Dictionary<Type, IExitableState>
 			{
-				[typeof(BootstrapState)] = new BootstrapState(this, services, levelList),
+				[typeof(BootstrapState)] = new BootstrapState(this, services, levelGenerationConfig),
 				[typeof(LoadGameState)] = new LoadGameState(this, services.GetSingle<ISceneLoader>(), services.GetSingle<ILevelService>(), services.GetSingle<LevelState>()),
 				[typeof(GameplayState)] = new GameplayState(this, services.GetSingle<IGameFactory>(), services.GetSingle<IEventService>(), services.GetSingle<LevelState>()),
 				[typeof(LevelCompleteState)] = new LevelCompleteState(services.GetSingle<ILevelService>()),

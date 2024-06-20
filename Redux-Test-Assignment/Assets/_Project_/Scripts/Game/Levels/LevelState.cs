@@ -8,23 +8,23 @@ namespace Game.Levels
 	{
 		private bool _initialized;
 		
-		public LevelConfig Config { get; private set; }
+		public LevelConfig Level { get; private set; }
 		public PlayerHealth Player { get; private set; }
 		public int BlocksPassed { get; set; }
 
-		public void Initialize(LevelConfig config, PlayerHealth player)
+		public void Initialize(LevelConfig level, PlayerHealth player)
 		{
 			if (_initialized)
 				throw new InvalidOperationException();
             
-			Config = config;
+			Level = level;
 			Player = player;
 			_initialized = true;
 		}
 
 		public void CleanUp()
 		{
-			Config = null;
+			Level = null;
 			BlocksPassed = 0;
 			_initialized = false;
 		}
