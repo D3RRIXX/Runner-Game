@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3638334593200398750}
   - component: {fileID: 1652270779721328758}
   - component: {fileID: -2564094438160989083}
+  - component: {fileID: -5740989394053089062}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -99,6 +100,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lives:
     value: 3
+  _invincibilityDuration: 3
+--- !u!114 &-5740989394053089062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5282004052772923448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7597a4acd464a62a1cf125268e32ff1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderers:
+  - {fileID: 3738796331408942009}
+  - {fileID: 3352603207903422928}
+  _playerHealth: {fileID: -2564094438160989083}
+  _blinkInterval: 0.1
 --- !u!1001 &9202405729681673598
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -187,6 +206,18 @@ GameObject:
 --- !u!4 &8664708238699096725 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1d78607769d52804ebcf22480781bd15,
+    type: 3}
+  m_PrefabInstance: {fileID: 9202405729681673598}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &3738796331408942009 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -3722405182657794361, guid: 1d78607769d52804ebcf22480781bd15,
+    type: 3}
+  m_PrefabInstance: {fileID: 9202405729681673598}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &3352603207903422928 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -3372257567545154386, guid: 1d78607769d52804ebcf22480781bd15,
     type: 3}
   m_PrefabInstance: {fileID: 9202405729681673598}
   m_PrefabAsset: {fileID: 0}

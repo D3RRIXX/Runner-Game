@@ -1,12 +1,16 @@
-﻿namespace Game.Events
+﻿using Game.Player;
+
+namespace Game.Events
 {
 	public class PlayerInvincibilityEvent
 	{
-		public PlayerInvincibilityEvent(bool isInvincible)
+		public PlayerInvincibilityEvent(PlayerHealth health)
 		{
-			IsInvincible = isInvincible;
+			Health = health;
 		}
-		
-		public bool IsInvincible { get; }
+
+		public PlayerHealth Health { get; }
+		public float InvincibilityDuration => Health.InvincibilityDuration;
+		public bool IsInvincible => Health.IsInvincible.Value;
 	}
 }

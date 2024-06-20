@@ -16,6 +16,7 @@ namespace Game.Player
 		private IEventService _eventService;
 		private readonly ReactiveProperty<bool> _isInvincible = new ReactiveProperty<bool>();
 
+		public float InvincibilityDuration => _invincibilityDuration;
 		public IReadOnlyReactiveProperty<int> Lives => _lives;
 		public IReadOnlyReactiveProperty<bool> IsInvincible => _isInvincible;
 		
@@ -24,7 +25,7 @@ namespace Game.Player
 			_eventService = AllServices.Container.GetSingle<IEventService>();
 			
 			_isInvincible.SkipLatestValueOnSubscribe()
-			             .Select(b => new PlayerInvincibilityEvent(b))
+			             .Select(b => new PlayerInvincibilityEvent(this))
 			             .Subscribe(x => _eventService.Fire(x))
 			             .AddTo(this);
 		}
