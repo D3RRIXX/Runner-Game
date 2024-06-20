@@ -33,6 +33,17 @@ namespace Game.Factory
 			await UniTask.WhenAll(_blockFactory.WarmUp(_level), _playerFactory.WarmUp(), _uiFactory.WarmUp());
 		}
 
+		public void CleanUp()
+		{
+			foreach (Block block in _activeBlocks)
+			{
+				block.Dispose();
+				Object.Destroy(block.gameObject);
+			}
+			
+			_activeBlocks.Clear();
+		}
+
 		public UniTask<GameObject> CreatePlayer(Vector3 at) => _playerFactory.Create(at);
 
 		public async UniTask<Block> TrySpawnNextBlock()

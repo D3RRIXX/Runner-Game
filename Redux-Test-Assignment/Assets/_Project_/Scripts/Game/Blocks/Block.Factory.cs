@@ -41,7 +41,8 @@ namespace Game.Blocks
 			public async UniTask<Block> InstantiateBlock(BlockType blockType, Vector3 position, Quaternion rotation)
 			{
 				var prefab = await _assetProvider.Load<GameObject>(GetBlockPrefabRef(blockType));
-				Block block = _poolingManager.Get(prefab.GetComponent<Block>(), position, rotation, _parent);
+				// Block block = _poolingManager.Get(prefab.GetComponent<Block>(), position, rotation, _parent);
+				Block block = Instantiate(prefab, position, rotation, _parent).GetComponent<Block>();
 				block.gameObject.SetActive(true);
 				block.Construct(_poolingManager, _eventService, blockType);
 				

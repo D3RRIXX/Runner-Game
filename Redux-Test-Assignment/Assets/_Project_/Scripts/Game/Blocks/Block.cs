@@ -39,7 +39,7 @@ namespace Game.Blocks
 		
 		public void Dispose()
 		{
-			_poolingManager.Return(this);
+			// _poolingManager.Return(this);
 			_disposable?.Dispose();
 			_disposable = null;
 		}

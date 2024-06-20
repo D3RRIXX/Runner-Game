@@ -14,5 +14,6 @@ namespace Game.Factory
 		UniTask<GameObject> CreatePlayer(Vector3 at);
 		UniTask<Block> TrySpawnNextBlock();
 		UniTask<UIManager> CreateUIRoot(PlayerHealth player);
+		void CleanUp();
 	}
 }

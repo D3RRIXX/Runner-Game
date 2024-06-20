@@ -32,6 +32,7 @@ namespace Game.StateMachine.States
 		public void OnEnter()
 		{
 			_levelState.CleanUp();
+			_gameFactory.CleanUp();
 			_sceneLoader.LoadScene(GAME_SCENE_PATH, OnGameSceneLoaded);
 		}
 
